@@ -104,12 +104,6 @@
             color: white;
         }
 
-        .logo-img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-        }
-
         .logo-container h1 {
             font-family: var(--font-heading);
             font-size: 1.2rem;
@@ -191,11 +185,12 @@
         }
 
         .hero-logo-large {
-            width: 150px;
             margin-bottom: 30px;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s forwards 0.2s;
+            display: flex;
+            justify-content: center;
         }
 
         .hero-badge {
@@ -358,48 +353,46 @@
 
         .match-teams {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
+            align-items: center;
+            margin-bottom: 40px;
+            text-align: center;
         }
 
         .team {
-            text-align: center;
             flex: 1;
-        }
-
-        .team img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .team h3 {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            max-width: 150px;
         }
 
         .vs {
             font-family: var(--font-heading);
             font-weight: 900;
-            font-size: 1.2rem;
-            color: var(--text-dim);
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.5;
             padding: 0 20px;
         }
 
         .match-info {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 24px;
         }
 
         .info-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             color: var(--text-dim);
             font-size: 0.9rem;
         }
@@ -407,94 +400,76 @@
         .info-item i {
             color: var(--primary);
             width: 18px;
-            height: 18px;
         }
 
-        /* ABOUT */
+        /* ABOUT SECTION */
         .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 80px;
             align-items: center;
         }
 
         .about-image {
             position: relative;
+            border-radius: 32px;
+            overflow: hidden;
         }
 
         .about-image img {
             width: 100%;
-            border-radius: 24px;
-            z-index: 2;
-            position: relative;
-        }
-
-        .about-image::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: -20px;
-            width: 100%;
-            height: 100%;
-            border: 2px solid var(--primary);
-            border-radius: 24px;
-            z-index: 1;
+            height: auto;
+            display: block;
         }
 
         .about-content h2 {
             font-family: var(--font-heading);
-            font-size: 3rem;
-            margin-bottom: 24px;
+            font-size: 3.5rem;
             line-height: 1.1;
+            margin-bottom: 30px;
         }
 
-        .about-content p {
-            color: var(--text-dim);
-            margin-bottom: 32px;
-            font-size: 1.1rem;
-        }
-
-        /* CONTACT */
+        /* CONTACT CARD */
         .contact-card {
             background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(5,5,5,0) 100%);
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 32px;
+            border: 1px solid rgba(255,215,0,0.1);
+            border-radius: 40px;
             padding: 80px 40px;
             text-align: center;
-            max-width: 1000px;
-            margin-inline: auto;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 20px;
             margin-top: 40px;
         }
 
         .social-btn {
             width: 60px;
             height: 60px;
-            border-radius: 50%;
-            background: white;
-            color: black;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
             text-decoration: none;
             transition: var(--transition-smooth);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .social-btn:hover {
             background: var(--primary);
-            transform: translateY(-10px) rotate(10deg);
+            color: black;
+            transform: translateY(-10px) rotate(8deg);
+            border-color: var(--primary);
         }
 
         /* FOOTER */
         footer {
             padding: 80px 60px 40px;
             background: #000;
-            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         .footer-content {
@@ -547,6 +522,7 @@
             section { padding: 80px 20px; }
             .about-grid { grid-template-columns: 1fr; gap: 40px; }
             .footer-content { flex-direction: column; gap: 40px; text-align: center; }
+            .match-info { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -557,12 +533,12 @@
     <!-- NAVIGATION -->
     <nav id="navbar">
         <a href="#" class="logo-container">
-            <img src="76744c50-3848-11f1-ab64-091d386e4219.jpg" alt="RIFC Logo" class="logo-img">
+            <i data-lucide="trophy" style="width:32px; height:32px; color:var(--primary);"></i>
             <h1>Rock Island FC</h1>
         </a>
         <div class="nav-links">
             <a href="#matches" onclick="smoothScroll(event, 'matches')">Matches</a>
-            <a href="#about" onclick="smoothScroll(event, 'about')">Club</a>
+
             <a href="#contact" onclick="smoothScroll(event, 'contact')">Contact</a>
         </div>
         <a href="#contact" class="btn btn-primary" style="padding: 10px 20px; border-radius: 8px;">Join Now</a>
@@ -572,7 +548,9 @@
     <section class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <img src="4087.jpg" alt="RIFC Logo" class="hero-logo-large">
+            <div class="hero-logo-large">
+                <i data-lucide="trophy" style="width:100px; height:100px; color:var(--primary);"></i>
+            </div>
             <div class="hero-badge">
                 <i data-lucide="trophy" style="width:14px;height:14px"></i>
                 Est. 2026 • Amateur sports team
@@ -583,7 +561,7 @@
                 <a href="#matches" onclick="smoothScroll(event, 'matches')" class="btn btn-primary">
                     Our matches <i data-lucide="arrow-right" style="width:18px"></i>
                 </a>
-                <a href="#about" onclick="smoothScroll(event, 'about')" class="btn btn-outline">Check out the team</a>
+
             </div>
         </div>
     </section>
@@ -600,11 +578,11 @@
                 <div class="match-status">NEXT UP</div>
                 <div class="match-teams">
                     <div class="team">
-                        <img src="76744c50-3848-11f1-ab64-091d386e4219.jpg" alt="RIFC">
+                        <i data-lucide="shield" style="width:60px; height:60px; color:var(--primary); margin-bottom:16px;"></i>
                         <h3>RIFC Rebels U14b</h3>
                     </div>
                     <div class="vs">VS</div>
-                    <div class="North Scott U14/15 Boys">
+                    <div class="team">
                         <i data-lucide="swords" style="width:60px; height:60px; color:var(--text-dim); margin-bottom:16px;"></i>
                         <h3>North Scott U14/15 Boys</h3>
                     </div>
@@ -632,17 +610,7 @@ Moline, IL, US (Field 8, 11v11)</span>
         </div>
     </section>
 
-    <!-- ABOUT SECTION -->
-    <section id="about">
-        <div class="about-grid">
-            <div class="about-image reveal">
-                <img src="https://raw.githubusercontent.com/jxckplayxz/static-html-docker-server/refs/heads/master/766dbca0-3848-11f1-ab64-091d386e4219.jpg?token=GHSAT0AAAAAADYPF4MKCLWDLEEPMITPYTE62O6W3LA" alt="..">
-            </div>
-            <div class="about-content reveal">
-                <h2><br></h2>
-            </div>
-        </div>
-    </section>
+
 
     <!-- CONTACT SECTION -->
     <section id="contact">
@@ -671,12 +639,12 @@ Moline, IL, US (Field 8, 11v11)</span>
     <footer>
         <div class="footer-content">
             <a href="#" class="footer-logo">
-                <img src="4087.jpg" alt="RIFC Logo" style="height:50px; width:auto;">
+                <i data-lucide="trophy" style="width:40px; height:40px; color:var(--primary);"></i>
                 <h1 style="font-family:var(--font-heading); font-size:1.5rem; text-transform:uppercase;">Rock Island FC</h1>
             </a>
             <div class="nav-links" style="display:flex;">
                 <a href="#matches" onclick="smoothScroll(event, 'matches')">Matches</a>
-                <a href="#about" onclick="smoothScroll(event, 'about')">our team</a>
+
                 <a href="#contact" onclick="smoothScroll(event, 'contact')">Contact</a>
             </div>
         </div>
