@@ -104,6 +104,13 @@
             color: white;
         }
 
+        .logo-container img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+        }
+
         .logo-container h1 {
             font-family: var(--font-heading);
             font-size: 1.2rem;
@@ -164,16 +171,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(5,5,5,1)), 
-                        url('FB_IMG_1776201771993.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(5,5,5,1)), 
+                        radial-gradient(circle at 50% 40%, rgba(255,215,0,0.08) 0%, transparent 60%);
             z-index: 1;
-            transform: scale(1.1);
-            animation: heroZoom 20s infinite alternate ease-in-out;
-        }
-
-        @keyframes heroZoom {
-            from { transform: scale(1); }
-            to { transform: scale(1.15); }
         }
 
         .hero-content {
@@ -191,6 +191,13 @@
             animation: fadeInUp 0.8s forwards 0.2s;
             display: flex;
             justify-content: center;
+        }
+
+        .hero-logo-large img {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.35));
         }
 
         .hero-badge {
@@ -306,19 +313,20 @@
             font-weight: 800;
         }
 
-        /* MATCH CARD */
-        .match-container {
-            display: flex;
-            justify-content: center;
+        /* MATCHES */
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         .match-card {
             background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 600px;
+            padding: 32px;
             position: relative;
             overflow: hidden;
             transition: var(--transition-smooth);
@@ -327,7 +335,8 @@
         .match-card:hover {
             border-color: rgba(255, 215, 0, 0.3);
             background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-10px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .match-card::before {
@@ -341,22 +350,28 @@
         }
 
         .match-status {
-            background: rgba(255, 215, 0, 0.1);
+            background: rgba(255, 215, 0, 0.12);
             color: var(--primary);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 100px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             display: inline-block;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .match-status.away {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ccc;
         }
 
         .match-teams {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            text-align: center;
+            margin-bottom: 28px;
+            gap: 12px;
         }
 
         .team {
@@ -364,69 +379,68 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
+            gap: 10px;
+        }
+
+        .team img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
         .team h3 {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            max-width: 150px;
+            line-height: 1.3;
+            max-width: 140px;
+        }
+
+        .team .side {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .vs {
             font-family: var(--font-heading);
             font-weight: 900;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary);
-            opacity: 0.5;
-            padding: 0 20px;
+            opacity: 0.6;
+            flex-shrink: 0;
         }
 
         .match-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
         }
 
         .info-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             color: var(--text-dim);
             font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .info-item i {
             color: var(--primary);
             width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        /* ABOUT SECTION */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-            border-radius: 32px;
-            overflow: hidden;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .about-content h2 {
-            font-family: var(--font-heading);
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 30px;
+        .info-item strong {
+            color: #fff;
+            font-weight: 600;
         }
 
         /* CONTACT CARD */
@@ -487,6 +501,12 @@
             color: white;
         }
 
+        .footer-logo img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
         .footer-bottom {
             display: flex;
             justify-content: space-between;
@@ -520,9 +540,9 @@
             nav { padding: 20px; }
             .nav-links { display: none; }
             section { padding: 80px 20px; }
-            .about-grid { grid-template-columns: 1fr; gap: 40px; }
             .footer-content { flex-direction: column; gap: 40px; text-align: center; }
-            .match-info { grid-template-columns: 1fr; }
+            .matches-grid { grid-template-columns: 1fr; }
+            .hero-logo-large img { width: 110px; height: 110px; }
         }
     </style>
 </head>
@@ -533,12 +553,11 @@
     <!-- NAVIGATION -->
     <nav id="navbar">
         <a href="#" class="logo-container">
-            <i data-lucide="trophy" style="width:32px; height:32px; color:var(--primary);"></i>
+            <img src="logo.jpg" alt="Rock Island FC Logo">
             <h1>Rock Island FC</h1>
         </a>
         <div class="nav-links">
             <a href="#matches" onclick="smoothScroll(event, 'matches')">Matches</a>
-
             <a href="#contact" onclick="smoothScroll(event, 'contact')">Contact</a>
         </div>
         <a href="#contact" class="btn btn-primary" style="padding: 10px 20px; border-radius: 8px;">Join Now</a>
@@ -549,19 +568,18 @@
         <div class="hero-bg"></div>
         <div class="hero-content">
             <div class="hero-logo-large">
-                <i data-lucide="trophy" style="width:100px; height:100px; color:var(--primary);"></i>
+                <img src="logo.jpg" alt="Rock Island FC – Rebels">
             </div>
             <div class="hero-badge">
                 <i data-lucide="trophy" style="width:14px;height:14px"></i>
-                Est. 2026 • Amateur sports team
+                Est. 2026 • Amateur Sports Team
             </div>
             <h1>RIFC <br><span style="color:var(--primary)">Rules the Pitch</span></h1>
             <p>Soccer Club teaching and developing kids in the community</p>
             <div class="hero-btns">
                 <a href="#matches" onclick="smoothScroll(event, 'matches')" class="btn btn-primary">
-                    Our matches <i data-lucide="arrow-right" style="width:18px"></i>
+                    Our Matches <i data-lucide="arrow-right" style="width:18px"></i>
                 </a>
-
             </div>
         </div>
     </section>
@@ -570,12 +588,75 @@
     <section id="matches">
         <div class="section-header reveal">
             <span>The Schedule</span>
-            <h2>No Upcoming Match</h2>
+            <h2>Upcoming Matches</h2>
         </div>
-        
 
+        <div class="matches-grid">
 
- 
+            <!-- Match 1 – Home -->
+            <div class="match-card reveal">
+                <div class="match-status">HOME</div>
+                <div class="match-teams">
+                    <div class="team">
+                        <img src="logo.jpg" alt="Rock Island FC">
+                        <h3>Rock Island FC<br>U14 Rebels</h3>
+                        <span class="side">Home</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="team">
+                        <img src="muscatine-logo.jpg" alt="Muscatine SC">
+                        <h3>Muscatine SC<br>MSC U14B</h3>
+                        <span class="side">Away</span>
+                    </div>
+                </div>
+                <div class="match-info">
+                    <div class="info-item">
+                        <i data-lucide="calendar"></i>
+                        <div><strong>Sunday, October 25, 2026</strong><br>12:00 PM CDT</div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="map-pin"></i>
+                        <div>
+                            <strong>Green Valley Sports Complex</strong><br>
+                            (Illowa ONLY) – Field 6 11v11
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match 2 – Away -->
+            <div class="match-card reveal">
+                <div class="match-status away">AWAY</div>
+                <div class="match-teams">
+                    <div class="team">
+                        <img src="northscott-logo.png" alt="North Scott SC">
+                        <h3>North Scott SC<br>U14/15 Boys</h3>
+                        <span class="side">Home</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="team">
+                        <img src="logo.jpg" alt="Rock Island FC">
+                        <h3>Rock Island FC<br>U14 Rebels</h3>
+                        <span class="side">Away</span>
+                    </div>
+                </div>
+                <div class="match-info">
+                    <div class="info-item">
+                        <i data-lucide="calendar"></i>
+                        <div><strong>Sunday, October 25, 2026</strong><br>3:00 PM CDT</div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="map-pin"></i>
+                        <div>
+                            <strong>Green Valley Sports Complex</strong><br>
+                            (Illowa ONLY) – Field 5 11v11
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
 
     <!-- CONTACT SECTION -->
     <section id="contact">
@@ -587,13 +668,13 @@
             <p style="color: var(--text-dim); font-size: 1.2rem; max-width: 600px; margin-inline: auto;">Ready to take your game to the next level? Follow us or send a message to start your journey.</p>
             
             <div class="social-links">
-                <a href="https://www.facebook.com/share/14cxWmMgvTL/" target="_blank" class="social-btn">
-                    <i data-lucide="phone"></i>
+                <a href="https://www.facebook.com/share/14cxWmMgvTL/" target="_blank" class="social-btn" title="Facebook">
+                    <i data-lucide="facebook"></i>
                 </a>
-                <a href="https://www.instagram.com/rockislandfutbolrebls?igsh=MWYwcGdraDI2MjN2aQ==" target="_blank" class="social-btn">
-                    <i data-lucide="circle-fading-plus"></i>
+                <a href="https://www.instagram.com/rockislandfutbolrebls?igsh=MWYwcGdraDI2MjN2aQ==" target="_blank" class="social-btn" title="Instagram">
+                    <i data-lucide="instagram"></i>
                 </a>
-                <a href="mailto:info@rockislandfc.com" class="social-btn">
+                <a href="mailto:info@rockislandfc.com" class="social-btn" title="Email">
                     <i data-lucide="mail"></i>
                 </a>
             </div>
@@ -604,12 +685,11 @@
     <footer>
         <div class="footer-content">
             <a href="#" class="footer-logo">
-                <i data-lucide="trophy" style="width:40px; height:40px; color:var(--primary);"></i>
+                <img src="logo.jpg" alt="Rock Island FC Logo">
                 <h1 style="font-family:var(--font-heading); font-size:1.5rem; text-transform:uppercase;">Rock Island FC</h1>
             </a>
             <div class="nav-links" style="display:flex;">
                 <a href="#matches" onclick="smoothScroll(event, 'matches')">Matches</a>
-
                 <a href="#contact" onclick="smoothScroll(event, 'contact')">Contact</a>
             </div>
         </div>
