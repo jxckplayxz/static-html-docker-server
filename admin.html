@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin • Rock Island FC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root { --red: #E31C23; --bg: #0a0a0a; --card: #141414; --border: rgba(255,255,255,0.08); --text: #fff; --dim: #999; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; text-align: center; }
+        .login-card img { width: 80px; margin-bottom: 20px; }
+        .login-card h1 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-bottom: 8px; }
+        .login-card p { color: var(--dim); font-size: 0.9rem; margin-bottom: 28px; }
+        .login-card input { width: 100%; padding: 14px 16px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 10px; color: #fff; font-size: 0.95rem; margin-bottom: 14px; outline: none; }
+        .login-card input:focus { border-color: var(--red); }
+        .login-card button { width: 100%; padding: 14px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+        .login-card button:hover { background: #ff2a32; }
+        .error { color: #ff5555; font-size: 0.85rem; margin-top: 12px; display: none; }
+
+        .dashboard { display: none; max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; flex-wrap: wrap; gap: 16px; }
+        .dash-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; }
+        .actions { display: flex; gap: 10px; }
+        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+        .btn-primary { background: var(--red); color: #fff; }
+        .btn-outline { background: transparent; color: #fff; border: 1px solid var(--border); }
+        .btn-danger { background: #ff3333; color: #fff; }
+        .btn:hover { opacity: 0.9; }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .tab { padding: 10px 18px; border-radius: 8px; background: transparent; border: none; color: var(--dim); font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .tab.active { background: rgba(227,28,35,0.15); color: var(--red); }
+
+        .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 28px; }
+        .form-card h2 { font-size: 1.1rem; margin-bottom: 18px; font-family: 'Outfit', sans-serif; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+        label { font-size: 0.8rem; color: var(--dim); font-weight: 500; }
+        input, select { padding: 12px 14px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; }
+        input:focus { border-color: var(--red); }
+        .logo-preview { width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: #1a1a1a; border: 1px solid var(--border); margin-top: 8px; }
+        .radio-row { display: flex; gap: 18px; margin-top: 4px; flex-wrap: wrap; }
+        .radio-row label { display: flex; align-items: center; gap: 6px; color: #fff; cursor: pointer; }
+        .score-row { display: none; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .score-row.show { display: grid; }
+
+        .list { display: flex; flex-direction: column; gap: 12px; }
+        .item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .item .info { flex: 1; min-width: 180px; }
+        .item .title { font-weight: 600; margin-bottom: 4px; }
+        .item .meta { font-size: 0.85rem; color: var(--dim); }
+        .badge { font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; font-weight: 700; margin-left: 8px; }
+        .badge-up { background: rgba(227,28,35,0.2); color: #ff6b6b; }
+        .badge-past { background: rgba(100,100,100,0.3); color: #aaa; }
+        .empty { text-align: center; color: var(--dim); padding: 32px; }
+        .hidden { display: none !important; }
+        .section-label { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin: 24px 0 12px; color: var(--dim); }
+        .panel { display: none; }
+        .panel.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="login-wrap" id="loginScreen">
+        <div class="login-card">
+            <img src="/logo.png" alt="RIFC">
+            <h1>Admin Login</h1>
+            <p>Rock Island FC · Match & Squad Manager</p>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="tryLogin()">Sign In</button>
+            <p class="error" id="loginError">Wrong username or password</p>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <div class="dash-header">
+            <h1>⚽ RIFC Admin</h1>
+            <div class="actions">
+                <a href="/" class="btn btn-outline" target="_blank">View Site</a>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showPanel('matches')">Matches</button>
+            <button class="tab" onclick="showPanel('players')">Players</button>
+        </div>
+
+        <!-- MATCHES PANEL -->
+        <div class="panel active" id="panel-matches">
+            <div class="form-card">
+                <h2 id="matchFormTitle">Add Match</h2>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Match Type</label>
+                        <div class="radio-row">
+                            <label><input type="radio" name="status" value="upcoming" checked onchange="toggleScore()"> Upcoming</label>
+                            <label><input type="radio" name="status" value="past" onchange="toggleScore()"> Past</label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Date</label><input type="date" id="matchDate"></div>
+                    <div class="form-group"><label>Time</label><input type="time" id="matchTime"></div>
+                    <div class="form-group full"><label>Location</label><input type="text" id="matchLocation" placeholder="Venue / Field"></div>
+                    <div class="form-group"><label>Opponent</label><input type="text" id="opponentName" placeholder="Team name"></div>
+                    <div class="form-group">
+                        <label>Home / Away</label>
+                        <div class="radio-row">
+                            <label><input type="radio" name="side" value="home" checked> Home</label>
+                            <label><input type="radio" name="side" value="away"> Away</label>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label>Opponent Logo</label>
+                        <input type="file" id="opponentLogo" accept="image/*" onchange="previewLogo(event)">
+                        <img id="logoPreview" class="logo-preview hidden" alt="">
+                    </div>
+                    <div class="form-group full score-row" id="scoreRow">
+                        <div class="form-group"><label>RIFC Score</label><input type="number" id="scoreUs" min="0"></div>
+                        <div class="form-group"><label>Opponent Score</label><input type="number" id="scoreThem" min="0"></div>
+                    </div>
+                </div>
+                <div style="margin-top:16px;display:flex;gap:10px;">
+                    <button class="btn btn-primary" onclick="saveMatch()"><span id="matchSaveText">Add Match</span></button>
+                    <button class="btn btn-outline hidden" id="cancelMatch" onclick="resetMatchForm()">Cancel</button>
+                </div>
+            </div>
+            <div class="section-label">Upcoming</div>
+            <div class="list" id="upcomingList"><div class="empty">None yet</div></div>
+            <div class="section-label">Past</div>
+            <div class="list" id="pastList"><div class="empty">None yet</div></div>
+        </div>
+
+        <!-- PLAYERS PANEL -->
+        <div class="panel" id="panel-players">
+            <div class="form-card">
+                <h2 id="playerFormTitle">Add Player</h2>
+                <div class="form-grid">
+                    <div class="form-group"><label>Name</label><input type="text" id="playerName" placeholder="Full name"></div>
+                    <div class="form-group"><label>Number</label><input type="number" id="playerNumber" min="0" max="99" placeholder="e.g. 10"></div>
+                    <div class="form-group full">
+                        <label>Position</label>
+                        <select id="playerPos">
+                            <option value="Goalkeeper">Goalkeeper</option>
+                            <option value="Defender">Defender</option>
+                            <option value="Midfielder">Midfielder</option>
+                            <option value="Forward">Forward</option>
+                            <option value="Winger">Winger</option>
+                            <option value="Striker">Striker</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Photo</label>
+                        <input type="file" id="playerPhoto" accept="image/*" onchange="previewPlayerPhoto(event)">
+                        <img id="playerPhotoPreview" class="logo-preview hidden" alt="Player photo" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+                    </div>
+                </div>
+                <div style="margin-top:16px;display:flex;gap:10px;">
+                    <button class="btn btn-primary" onclick="savePlayer()"><span id="playerSaveText">Add Player</span></button>
+                    <button class="btn btn-outline hidden" id="cancelPlayer" onclick="resetPlayerForm()">Cancel</button>
+                </div>
+            </div>
+            <div class="section-label">Squad</div>
+            <div class="list" id="playersList"><div class="empty">No players yet</div></div>
+        </div>
+    </div>
+
+    <script>
+        const USER = 'rifc.admin', PASS = 'alimasi123';
+        let editingMatchId = null, editingPlayerId = null, pendingLogo = null, pendingPlayerPhoto = null;
+
+        function tryLogin() {
+            if (document.getElementById('username').value.trim() === USER && document.getElementById('password').value === PASS) {
+                sessionStorage.setItem('rifc_admin', '1');
+                showDash();
+            } else document.getElementById('loginError').style.display = 'block';
+        }
+        function logout() { sessionStorage.removeItem('rifc_admin'); location.reload(); }
+        function showDash() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            renderMatches(); renderPlayers();
+        }
+        if (sessionStorage.getItem('rifc_admin') === '1') showDash();
+        document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+        function showPanel(name) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('panel-' + name).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function getMatches() { try { return JSON.parse(localStorage.getItem('rifc_matches') || '[]'); } catch { return []; } }
+        function saveMatches(m) { localStorage.setItem('rifc_matches', JSON.stringify(m)); }
+        function getPlayers() { try { return JSON.parse(localStorage.getItem('rifc_players') || '[]'); } catch { return []; } }
+        function savePlayers(p) { localStorage.setItem('rifc_players', JSON.stringify(p)); }
+
+        function toggleScore() {
+            document.getElementById('scoreRow').classList.toggle('show', document.querySelector('input[name="status"]:checked').value === 'past');
+        }
+        
+        function previewPlayerPhoto(e) {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader();
+            r.onload = ev => {
+                pendingPlayerPhoto = ev.target.result;
+                const img = document.getElementById('playerPhotoPreview');
+                img.src = pendingPlayerPhoto;
+                img.classList.remove('hidden');
+            };
+            r.readAsDataURL(f);
+        }
+
+        function previewLogo(e) {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader();
+            r.onload = ev => { pendingLogo = ev.target.result; const img = document.getElementById('logoPreview'); img.src = pendingLogo; img.classList.remove('hidden'); };
+            r.readAsDataURL(f);
+        }
+
+        function saveMatch() {
+            const date = document.getElementById('matchDate').value;
+            const time = document.getElementById('matchTime').value;
+            const location = document.getElementById('matchLocation').value.trim();
+            const opponent = document.getElementById('opponentName').value.trim();
+            const side = document.querySelector('input[name="side"]:checked').value;
+            const status = document.querySelector('input[name="status"]:checked').value;
+            const scoreUs = document.getElementById('scoreUs').value;
+            const scoreThem = document.getElementById('scoreThem').value;
+            if (!date || !time || !location || !opponent) { alert('Fill date, time, location, opponent'); return; }
+            if (status === 'past' && (scoreUs === '' || scoreThem === '')) { alert('Enter scores'); return; }
+
+            const matches = getMatches();
+            const match = {
+                id: editingMatchId || Date.now().toString(),
+                date, time, location, opponent, side, status,
+                scoreUs: status === 'past' ? parseInt(scoreUs) : null,
+                scoreThem: status === 'past' ? parseInt(scoreThem) : null,
+                logo: pendingLogo || (editingMatchId ? matches.find(m => m.id === editingMatchId)?.logo : null)
+            };
+            if (editingMatchId) {
+                const i = matches.findIndex(m => m.id === editingMatchId);
+                if (i !== -1) matches[i] = match;
+            } else matches.push(match);
+            matches.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+            saveMatches(matches);
+            resetMatchForm();
+            renderMatches();
+        }
+
+        function editMatch(id) {
+            const m = getMatches().find(x => x.id === id); if (!m) return;
+            editingMatchId = id;
+            document.getElementById('matchDate').value = m.date;
+            document.getElementById('matchTime').value = m.time;
+            document.getElementById('matchLocation').value = m.location;
+            document.getElementById('opponentName').value = m.opponent;
+            document.querySelector(`input[name="side"][value="${m.side}"]`).checked = true;
+            document.querySelector(`input[name="status"][value="${m.status || 'upcoming'}"]`).checked = true;
+            toggleScore();
+            if (m.status === 'past') { document.getElementById('scoreUs').value = m.scoreUs ?? ''; document.getElementById('scoreThem').value = m.scoreThem ?? ''; }
+            pendingLogo = m.logo || null;
+            const prev = document.getElementById('logoPreview');
+            if (m.logo) { prev.src = m.logo; prev.classList.remove('hidden'); } else prev.classList.add('hidden');
+            document.getElementById('matchFormTitle').textContent = 'Edit Match';
+            document.getElementById('matchSaveText').textContent = 'Update';
+            document.getElementById('cancelMatch').classList.remove('hidden');
+        }
+
+        function deleteMatch(id) {
+            if (!confirm('Delete match?')) return;
+            saveMatches(getMatches().filter(m => m.id !== id));
+            renderMatches();
+        }
+
+        function resetMatchForm() {
+            editingMatchId = null; pendingLogo = null;
+            ['matchDate','matchTime','matchLocation','opponentName','scoreUs','scoreThem','opponentLogo'].forEach(id => document.getElementById(id).value = '');
+            document.querySelector('input[name="side"][value="home"]').checked = true;
+            document.querySelector('input[name="status"][value="upcoming"]').checked = true;
+            document.getElementById('logoPreview').classList.add('hidden');
+            document.getElementById('scoreRow').classList.remove('show');
+            document.getElementById('matchFormTitle').textContent = 'Add Match';
+            document.getElementById('matchSaveText').textContent = 'Add Match';
+            document.getElementById('cancelMatch').classList.add('hidden');
+        }
+
+        function formatDate(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+        function formatTime(t) { const [h,m]=t.split(':'); const hour=+h; return (hour%12||12)+':'+m+' '+(hour>=12?'PM':'AM'); }
+
+        function renderMatches() {
+            const all = getMatches();
+            const up = all.filter(m => m.status !== 'past');
+            const past = all.filter(m => m.status === 'past').reverse();
+            const render = (arr, el) => {
+                document.getElementById(el).innerHTML = arr.length ? arr.map(m => `
+                    <div class="item">
+                        <div class="info">
+                            <div class="title">${m.side==='home'?'RIFC vs '+m.opponent:m.opponent+' vs RIFC'}
+                                <span class="badge ${m.status==='past'?'badge-past':'badge-up'}">${m.status==='past'?'PAST':'UPCOMING'}</span>
+                                ${m.status==='past'?` <strong style="color:#E31C23">${m.scoreUs}–${m.scoreThem}</strong>`:''}
+                            </div>
+                            <div class="meta">${formatDate(m.date)} · ${formatTime(m.time)} · ${m.location}</div>
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn btn-outline" onclick="editMatch('${m.id}')" style="padding:8px 12px;">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteMatch('${m.id}')" style="padding:8px 12px;">Delete</button>
+                        </div>
+                    </div>`).join('') : '<div class="empty">None yet</div>';
+            };
+            render(up, 'upcomingList');
+            render(past, 'pastList');
+        }
+
+        // PLAYERS
+        function savePlayer() {
+            const name = document.getElementById('playerName').value.trim();
+            const number = document.getElementById('playerNumber').value;
+            const position = document.getElementById('playerPos').value;
+            if (!name) { alert('Enter player name'); return; }
+            const players = getPlayers();
+            const player = {
+                id: editingPlayerId || Date.now().toString(),
+                name,
+                number: number || '',
+                position,
+                photo: pendingPlayerPhoto || (editingPlayerId ? players.find(p => p.id === editingPlayerId)?.photo : null)
+            };
+            if (editingPlayerId) {
+                const i = players.findIndex(p => p.id === editingPlayerId);
+                if (i !== -1) players[i] = player;
+            } else players.push(player);
+            savePlayers(players);
+            resetPlayerForm();
+            renderPlayers();
+        }
+
+        function editPlayer(id) {
+            const p = getPlayers().find(x => x.id === id); if (!p) return;
+            editingPlayerId = id;
+            document.getElementById('playerName').value = p.name;
+            document.getElementById('playerNumber').value = p.number || '';
+            document.getElementById('playerPos').value = p.position || 'Midfielder';
+            pendingPlayerPhoto = p.photo || null;
+            const prev = document.getElementById('playerPhotoPreview');
+            if (p.photo) { prev.src = p.photo; prev.classList.remove('hidden'); }
+            else prev.classList.add('hidden');
+            document.getElementById('playerFormTitle').textContent = 'Edit Player';
+            document.getElementById('playerSaveText').textContent = 'Update';
+            document.getElementById('cancelPlayer').classList.remove('hidden');
+        }
+
+        function deletePlayer(id) {
+            if (!confirm('Remove player?')) return;
+            savePlayers(getPlayers().filter(p => p.id !== id));
+            renderPlayers();
+        }
+
+        function resetPlayerForm() {
+            editingPlayerId = null;
+            pendingPlayerPhoto = null;
+            document.getElementById('playerName').value = '';
+            document.getElementById('playerNumber').value = '';
+            document.getElementById('playerPos').value = 'Midfielder';
+            document.getElementById('playerPhoto').value = '';
+            document.getElementById('playerPhotoPreview').classList.add('hidden');
+            document.getElementById('playerFormTitle').textContent = 'Add Player';
+            document.getElementById('playerSaveText').textContent = 'Add Player';
+            document.getElementById('cancelPlayer').classList.add('hidden');
+        }
+
+        function renderPlayers() {
+            const players = getPlayers().sort((a, b) => (parseInt(a.number) || 99) - (parseInt(b.number) || 99));
+            document.getElementById('playersList').innerHTML = players.length ? players.map(p => `
+                <div class="item">
+                    <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:180px;">
+                        ${p.photo ? `<img src="${p.photo}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E31C23;">` : `<div style="width:48px;height:48px;border-radius:50%;background:#1a1a1a;border:2px solid #333;display:flex;align-items:center;justify-content:center;color:#666;font-size:0.7rem;">No pic</div>`}
+                        <div class="info">
+                            <div class="title"><span style="color:#E31C23;font-weight:800;margin-right:8px;">#${p.number || '–'}</span>${p.name}</div>
+                            <div class="meta">${p.position}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn btn-outline" onclick="editPlayer('${p.id}')" style="padding:8px 12px;">Edit</button>
+                        <button class="btn btn-danger" onclick="deletePlayer('${p.id}')" style="padding:8px 12px;">Delete</button>
+                    </div>
+                </div>`).join('') : '<div class="empty">No players yet</div>';
+        }
+    </script>
+</body>
+</html>
