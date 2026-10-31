@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RIFC Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--red:#e31c23;--bg:#0a0a0a;--card:#151515;--muted:#999;--line:#292929}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:15px Inter,Arial,sans-serif;padding:22px}.wrap{max-width:1050px;margin:auto}.login-wrap{max-width:420px;margin:8vh auto;background:var(--card);padding:30px;border:1px solid var(--line);border-radius:12px;text-align:center}.login-wrap img{width:80px;object-fit:contain}.login-wrap h1,.dash-header h1{font-family:Arial,sans-serif}.login-wrap p,.hint{color:var(--muted)}input,select,textarea{width:100%;padding:12px;background:#0c0c0c;color:#fff;border:1px solid #383838;border-radius:6px;margin:6px 0 14px;font:inherit}textarea{min-height:85px;resize:vertical}label{display:block;font-size:13px;color:#ccc;font-weight:700}.btn{border:0;border-radius:6px;background:var(--red);color:#fff;padding:11px 16px;font-weight:800;cursor:pointer}.btn.secondary{background:#282828;border:1px solid #444}.btn.danger{background:#77191d}.login-wrap .btn{width:100%}.error{color:#ff7777;display:none}.dashboard{display:none}.dash-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.tabs{display:flex;gap:8px;margin:22px 0}.tab{background:#222;color:white;border:1px solid #444;padding:10px 18px;border-radius:6px;cursor:pointer}.tab.active{background:var(--red);border-color:var(--red)}.panel{display:none}.panel.active{display:block}.form-card{background:var(--card);border:1px solid var(--line);padding:22px;border-radius:10px;margin-bottom:25px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.full{grid-column:1/-1}.list{display:grid;gap:10px}.item{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);padding:14px;border-radius:8px}.meta{color:var(--muted);font-size:13px;margin-top:4px}.section-label{font-weight:800;margin:22px 0 10px;color:#bbb}.actions{display:flex;gap:8px;flex-wrap:wrap}.preview{max-width:100px;max-height:100px;object-fit:cover;border-radius:8px;display:block;margin:6px 0}.status{color:#bbb;font-size:13px;margin:10px 0}.hidden{display:none!important}@media(max-width:650px){body{padding:13px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="login-wrap" id="loginScreen"><img src="/logo.png" alt="RIFC"><h1>Admin Login</h1><p>Rock Island FC · Match &amp; Squad Manager</p>
+<form id="loginForm"><label>Email</label><input id="email" type="email" autocomplete="username" required placeholder="Admin email"><label>Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Password"><button class="btn" type="submit">Sign In</button></form><p class="error" id="loginError"></p></div>
+<div class="dashboard" id="dashboard"><div class="dash-header"><h1>Rock Island FC Admin</h1><div class="actions"><a class="btn secondary" href="/" target="_blank">View Site</a><button class="btn secondary" id="logoutBtn">Logout</button></div></div><div class="status" id="status"></div>
+<div class="tabs"><button class="tab active" data-panel="matches">Matches</button><button class="tab" data-panel="players">Players</button></div>
+<div class="panel active" id="panel-matches"><div class="form-card"><h2 id="matchTitle">Add Match</h2><form id="matchForm"><div class="form-grid">
+<div><label>Match type</label><select id="matchStatus"><option value="upcoming">Upcoming</option><option value="past">Past</option></select></div><div><label>Date</label><input type="date" id="matchDate" required></div>
+<div><label>Time</label><input type="time" id="matchTime" required></div><div><label>Location</label><input id="matchLocation" required placeholder="Venue / Field"></div>
+<div><label>Opponent</label><input id="opponent" required placeholder="Team name"></div><div><label>Home / Away</label><select id="matchSide"><option value="home">Home</option><option value="away">Away</option></select></div>
+<div><label>RIFC score (past matches)</label><input type="number" id="scoreUs" min="0"></div><div><label>Opponent score</label><input type="number" id="scoreThem" min="0"></div>
+<div class="full"><label>Opponent logo</label><input type="file" id="matchLogo" accept="image/*"><img id="matchLogoPreview" class="preview hidden" alt="Logo preview"></div></div>
+<div class="actions"><button class="btn" type="submit" id="matchSubmit">Add Match</button><button class="btn secondary hidden" type="button" id="cancelMatch">Cancel</button></div></form></div>
+<div class="section-label">Upcoming fixtures</div><div class="list" id="upcomingList"></div><div class="section-label">Past results</div><div class="list" id="pastList"></div></div>
+<div class="panel" id="panel-players"><div class="form-card"><h2 id="playerTitle">Add Player</h2><form id="playerForm"><div class="form-grid">
+<div><label>Player name</label><input id="playerName" required></div><div><label>Squad number</label><input id="playerNumber" type="number" min="0" max="99"></div>
+<div><label>Position</label><select id="playerPosition"><option>Goalkeeper</option><option>Defender</option><option>Midfielder</option><option>Forward</option><option>Winger</option><option>Striker</option></select></div>
+<div><label>Age</label><input id="playerAge" type="number" min="1" max="99"></div><div><label>Nationality</label><input id="playerNationality" placeholder="Optional"></div>
+<div class="full"><label>Player bio</label><textarea id="playerBio" placeholder="Short player profile"></textarea></div>
+<div class="full"><label>Player photo</label><input type="file" id="playerPhoto" accept="image/*"><img id="playerPhotoPreview" class="preview hidden" alt="Photo preview"></div></div>
+<div class="actions"><button class="btn" type="submit" id="playerSubmit">Add Player</button><button class="btn secondary hidden" type="button" id="cancelPlayer">Cancel</button></div></form></div>
+<div class="section-label">Squad</div><div class="list" id="playersList"></div></div>
+</div></div>
+<script>
+const SUPABASE_URL="https://rpraezlikhlzvfxkzrmj.supabase.co",SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let matches=[],players=[],editingMatch=null,editingPlayer=null,pendingLogo=null,pendingPhoto=null;
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function say(msg){$('status').textContent=msg;}
+function dateText(d){return new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});}
+function timeText(t){if(!t)return '';const [h,m]=t.split(':');const n=+h;return (n%12||12)+':'+m+' '+(n>=12?'PM':'AM');}
+async function requireAdmin(){
+ const {data:{session}}=await db.auth.getSession();
+ if(!session)return false;
+ const {data,error}=await db.from('admins').select('user_id').eq('user_id',session.user.id).maybeSingle();
+ if(error||!data){await db.auth.signOut();$('loginError').textContent='This account is not an approved admin';$('loginError').style.display='block';return false;}
+ return true;
+}
+async function showDashboard(){
+ $('loginScreen').style.display='none';$('dashboard').style.display='block';
+ await Promise.all([loadMatches(),loadPlayers()]);
+}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginError').style.display='none';const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginError').textContent=error.message;$('loginError').style.display='block';return;}if(await requireAdmin())showDashboard();});
+$('logoutBtn').onclick=async()=>{await db.auth.signOut();location.reload();};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('panel-'+b.dataset.panel).classList.add('active');});
+async function uploadImage(file,folder){
+ if(!file)return null;
+ if(!file.type.startsWith('image/'))throw new Error('Choose an image file');
+ if(file.size>5*1024*1024)throw new Error('Image must be under 5 MB');
+ const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+ const path=folder+'/'+crypto.randomUUID()+'.'+ext;
+ const {error}=await db.storage.from('rifc-media').upload(path,file,{upsert:false,contentType:file.type});
+ if(error)throw error;
+ return db.storage.from('rifc-media').getPublicUrl(path).data.publicUrl;
+}
+async function loadMatches(){const {data,error}=await db.from('matches').select('*').order('date',{ascending:true});if(error){say(error.message);return;}matches=data||[];renderMatches();}
+async function loadPlayers(){const {data,error}=await db.from('players').select('*').order('number',{ascending:true});if(error){say(error.message);return;}players=data||[];renderPlayers();}
+function renderMatches(){
+ const upcoming=matches.filter(m=>m.status!=='past'),past=matches.filter(m=>m.status==='past').reverse();
+ const draw=arr=>arr.length?arr.map(m=>`<div class="item"><div><strong>${m.side==='home'?'RIFC vs '+esc(m.opponent):esc(m.opponent)+' vs RIFC'}</strong>${m.status==='past'?` · <b>${m.score_us??0}–${m.score_them??0}</b>`:''}<div class="meta">${dateText(m.date)} · ${timeText(m.time)} · ${esc(m.location)}</div></div><div class="actions"><button class="btn secondary" onclick="editMatch('${m.id}')">Edit</button><button class="btn danger" onclick="deleteMatch('${m.id}')">Delete</button></div></div>`).join(''):'<div class="item">None yet</div>';
+ $('upcomingList').innerHTML=draw(upcoming);$('pastList').innerHTML=draw(past);
+}
+function resetMatch(){editingMatch=null;pendingLogo=null;$('matchForm').reset();$('matchTitle').textContent='Add Match';$('matchSubmit').textContent='Add Match';$('cancelMatch').classList.add('hidden');$('matchLogoPreview').classList.add('hidden');}
+$('cancelMatch').onclick=resetMatch;
+$('matchLogo').onchange=e=>{const f=e.target.files[0];if(!f)return;pendingLogo=f;$('matchLogoPreview').src=URL.createObjectURL(f);$('matchLogoPreview').classList.remove('hidden');};
+window.editMatch=id=>{const m=matches.find(x=>x.id===id);if(!m)return;editingMatch=id;$('matchStatus').value=m.status||'upcoming';$('matchDate').value=m.date;$('matchTime').value=m.time||'';$('matchLocation').value=m.location||'';$('opponent').value=m.opponent||'';$('matchSide').value=m.side||'home';$('scoreUs').value=m.score_us??'';$('scoreThem').value=m.score_them??'';pendingLogo=null;if(m.logo){$('matchLogoPreview').src=m.logo;$('matchLogoPreview').classList.remove('hidden');}else $('matchLogoPreview').classList.add('hidden');$('matchTitle').textContent='Edit Match';$('matchSubmit').textContent='Save Changes';$('cancelMatch').classList.remove('hidden');};
+$('matchForm').onsubmit=async e=>{e.preventDefault();try{say('Saving match...');const status=$('matchStatus').value;if(status==='past'&&($('scoreUs').value===''||$('scoreThem').value===''))throw new Error('Enter both scores for a past match');let logo=editingMatch?matches.find(m=>m.id===editingMatch)?.logo:null;if(pendingLogo)logo=await uploadImage(pendingLogo,'opponent-logos');const row={date:$('matchDate').value,time:$('matchTime').value,location:$('matchLocation').value.trim(),opponent:$('opponent').value.trim(),side:$('matchSide').value,status,score_us:status==='past'?Number($('scoreUs').value):null,score_them:status==='past'?Number($('scoreThem').value):null,logo};const result=editingMatch?await db.from('matches').update(row).eq('id',editingMatch):await db.from('matches').insert(row);if(result.error)throw result.error;resetMatch();await loadMatches();say('Match saved');}catch(err){say('Could not save: '+err.message);}};
+window.deleteMatch=async id=>{if(!confirm('Delete this match?'))return;const {error}=await db.from('matches').delete().eq('id',id);if(error)say(error.message);else{await loadMatches();say('Match deleted');}};
+function resetPlayer(){editingPlayer=null;pendingPhoto=null;$('playerForm').reset();$('playerTitle').textContent='Add Player';$('playerSubmit').textContent='Add Player';$('cancelPlayer').classList.add('hidden');$('playerPhotoPreview').classList.add('hidden');}
+$('cancelPlayer').onclick=resetPlayer;
+$('playerPhoto').onchange=e=>{const f=e.target.files[0];if(!f)return;pendingPhoto=f;$('playerPhotoPreview').src=URL.createObjectURL(f);$('playerPhotoPreview').classList.remove('hidden');};
+function renderPlayers(){$('playersList').innerHTML=players.length?players.map(p=>`<div class="item"><div style="display:flex;align-items:center;gap:12px">${p.photo?`<img src="${esc(p.photo)}" style="width:48px;height:48px;object-fit:cover;border-radius:50%">`:'<div style="width:48px;height:48px;background:#333;border-radius:50%"></div>'}<div><strong>#${esc(p.number||'–')} ${esc(p.name)}</strong><div class="meta">${esc(p.position)}${p.age?' · '+p.age:''}${p.nationality?' · '+esc(p.nationality):''}</div></div></div><div class="actions"><button class="btn secondary" onclick="editPlayer('${p.id}')">Edit</button><button class="btn danger" onclick="deletePlayer('${p.id}')">Delete</button></div></div>`).join(''):'<div class="item">No players yet</div>';}
+window.editPlayer=id=>{const p=players.find(x=>x.id===id);if(!p)return;editingPlayer=id;$('playerName').value=p.name||'';$('playerNumber').value=p.number||'';$('playerPosition').value=p.position||'Midfielder';$('playerAge').value=p.age||'';$('playerNationality').value=p.nationality||'';$('playerBio').value=p.bio||'';pendingPhoto=null;if(p.photo){$('playerPhotoPreview').src=p.photo;$('playerPhotoPreview').classList.remove('hidden');}else $('playerPhotoPreview').classList.add('hidden');$('playerTitle').textContent='Edit Player';$('playerSubmit').textContent='Save Changes';$('cancelPlayer').classList.remove('hidden');};
+$('playerForm').onsubmit=async e=>{e.preventDefault();try{say('Saving player...');let photo=editingPlayer?players.find(p=>p.id===editingPlayer)?.photo:null;if(pendingPhoto)photo=await uploadImage(pendingPhoto,'player-photos');const row={name:$('playerName').value.trim(),number:$('playerNumber').value||null,position:$('playerPosition').value,age:$('playerAge').value?Number($('playerAge').value):null,nationality:$('playerNationality').value.trim()||null,bio:$('playerBio').value.trim()||null,photo};const result=editingPlayer?await db.from('players').update(row).eq('id',editingPlayer):await db.from('players').insert(row);if(result.error)throw result.error;resetPlayer();await loadPlayers();say('Player saved');}catch(err){say('Could not save: '+err.message);}};
+window.deletePlayer=async id=>{if(!confirm('Remove this player?'))return;const {error}=await db.from('players').delete().eq('id',id);if(error)say(error.message);else{await loadPlayers();say('Player removed');}};
+(async()=>{if(await requireAdmin())await showDashboard();})();
+</script></body></html>
