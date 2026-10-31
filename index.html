@@ -1,365 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Island FC</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --red: #E31C23;
-            --red-dark: #A81419;
-            --red-deep: #7A0F13;
-            --black: #0A0A0A;
-            --black-card: #121212;
-            --black-elevated: #1A1A1A;
-            --text: #FFFFFF;
-            --text-muted: #999;
-            --border: rgba(255,255,255,0.08);
-            --font: 'Outfit', sans-serif;
-            --body: 'Inter', sans-serif;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--body); background: var(--black); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
-        .nav-top { background: var(--red); padding: 8px 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-align: center; color: #fff; }
-        .nav-main { display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; background: transparent; transition: all 0.3s; }
-        .nav.scrolled .nav-main { background: rgba(10,10,10,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 48px; }
-        .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
-        .nav-logo img { height: 48px; width: auto; object-fit: contain; }
-        .nav-logo span { font-family: var(--font); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 32px; list-style: none; }
-        .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--red); }
-        .nav-cta { background: var(--red); color: #fff; padding: 10px 22px; border-radius: 4px; font-weight: 700; font-size: 0.85rem; text-decoration: none; text-transform: uppercase; letter-spacing: 0.04em; transition: all 0.2s; }
-        .nav-cta:hover { background: #ff2a32; transform: translateY(-1px); }
-
-        .hero { min-height: 100vh; position: relative; display: flex; align-items: flex-end; padding: 0 48px 80px; overflow: hidden; }
-        .hero-bg { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.98) 100%), linear-gradient(90deg, rgba(227,28,35,0.4) 0%, transparent 55%), radial-gradient(ellipse at 70% 30%, rgba(227,28,35,0.12) 0%, transparent 50%); z-index: 1; }
-        .hero-bg::before { content: ''; position: absolute; inset: 0; background: url('/logo.png') center 40% / 42% no-repeat; opacity: 0.07; filter: grayscale(1); }
-        .hero-content { position: relative; z-index: 2; max-width: 700px; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(227,28,35,0.25); border: 1px solid rgba(227,28,35,0.4); color: #ff6b6b; padding: 6px 14px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
-        .hero h1 { font-family: var(--font); font-size: clamp(3.5rem, 9vw, 6.5rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 20px; }
-        .hero h1 span { color: var(--red); }
-        .hero p { font-size: 1.15rem; color: var(--text-muted); max-width: 480px; margin-bottom: 32px; }
-        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; text-transform: uppercase; letter-spacing: 0.04em; transition: all 0.25s; border: none; cursor: pointer; }
-        .btn-red { background: var(--red); color: #fff; }
-        .btn-red:hover { background: #ff2a32; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(227,28,35,0.3); }
-        .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
-        .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
-
-        .next-match-bar { background: linear-gradient(90deg, var(--red-deep), var(--red)); padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-bottom: 3px solid #fff; }
-        .next-match-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
-        .next-match-teams { display: flex; align-items: center; gap: 16px; font-family: var(--font); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
-        .next-match-teams img { width: 36px; height: 36px; object-fit: contain; }
-        .next-match-vs { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
-        .next-match-meta { font-size: 0.85rem; color: rgba(255,255,255,0.85); text-align: right; }
-        .next-match-meta strong { display: block; color: #fff; font-size: 0.95rem; }
-
-        section { padding: 80px 48px; max-width: 1280px; margin: 0 auto; }
-        .section-header { margin-bottom: 40px; }
-        .section-header h2 { font-family: var(--font); font-size: 2.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
-        .section-header h2 span { color: var(--red); }
-        .section-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
-
-        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .match-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: all 0.3s; }
-        .match-card:hover { border-color: rgba(227,28,35,0.5); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .match-card-top { background: linear-gradient(90deg, var(--red-deep), var(--red)); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; }
-        .match-card-top.past { background: #1a1a1a; border-bottom: 1px solid var(--border); }
-        .match-badge { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; }
-        .match-badge.final { color: var(--text-muted); }
-        .match-date-sm { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
-        .match-body { padding: 28px 20px; }
-        .match-teams-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
-        .team-block { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-        .team-block img { width: 56px; height: 56px; object-fit: contain; }
-        .team-block h3 { font-family: var(--font); font-size: 0.9rem; font-weight: 700; line-height: 1.25; max-width: 120px; }
-        .team-block .role { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-        .match-center { flex-shrink: 0; text-align: center; min-width: 60px; }
-        .match-center .vs { font-family: var(--font); font-weight: 800; font-size: 1rem; color: var(--red); opacity: 0.8; }
-        .match-center .score { font-family: var(--font); font-weight: 900; font-size: 1.75rem; color: var(--red); }
-        .match-footer { border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-        .match-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
-        .match-info-row i { width: 14px; height: 14px; color: var(--red); flex-shrink: 0; }
-        .match-info-row strong { color: #fff; font-weight: 600; }
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--black-card); border: 1px dashed var(--border); border-radius: 8px; }
-
-        /* PLAYERS */
-        .players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
-        .player-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .player-card:hover { border-color: rgba(227,28,35,0.5); transform: translateY(-4px); }
-        .player-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--red);
-        }
-        .player-photo {
-            width: 88px; height: 88px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--red); margin: 0 auto 12px; display: block;
-            background: #1a1a1a;
-        }
-        .player-photo-placeholder {
-            width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 12px;
-            background: #1a1a1a; border: 3px solid #333;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font); font-size: 1.8rem; font-weight: 900; color: var(--red);
-        }
-        .player-number {
-            font-family: var(--font);
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--red);
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-        .player-name {
-            font-family: var(--font);
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .player-pos {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 600;
-        }
-
-        .contact-section {
-            background: linear-gradient(135deg, rgba(227,28,35,0.15) 0%, transparent 60%);
-            border: 1px solid rgba(227,28,35,0.25);
-            border-radius: 12px;
-            padding: 64px 40px;
-            text-align: center;
-            margin: 0 48px 80px;
-            max-width: 1280px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .contact-section h2 { font-family: var(--font); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; text-transform: uppercase; margin-bottom: 12px; }
-        .contact-section p { color: var(--text-muted); max-width: 480px; margin: 0 auto 32px; font-size: 1.05rem; }
-        .socials { display: flex; justify-content: center; gap: 14px; }
-        .social-btn { width: 52px; height: 52px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; transition: all 0.25s; }
-        .social-btn:hover { background: var(--red); border-color: var(--red); transform: translateY(-3px); }
-
-        footer { background: #050505; border-top: 1px solid var(--border); padding: 48px 48px 32px; }
-        .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px; }
-        .footer-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
-        .footer-logo img { height: 44px; }
-        .footer-logo span { font-family: var(--font); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
-        .footer-links { display: flex; gap: 28px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-        .footer-links a:hover { color: var(--red); }
-        .footer-bottom { max-width: 1280px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap; gap: 12px; }
-
-        .fade-up { opacity: 0; transform: translateY(24px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 900px) {
-            .nav-main { padding: 14px 20px; }
-            .nav-links { display: none; }
-            .hero { padding: 0 20px 60px; align-items: center; }
-            .hero-content { text-align: center; }
-            .hero p { margin-inline: auto; }
-            .hero-actions { justify-content: center; }
-            .next-match-bar { padding: 16px 20px; flex-direction: column; text-align: center; }
-            .next-match-meta { text-align: center; }
-            section { padding: 60px 20px; }
-            .contact-section { margin: 0 20px 60px; padding: 48px 24px; }
-            footer { padding: 40px 20px 24px; }
-            .footer-inner { flex-direction: column; text-align: center; }
-            .footer-links { justify-content: center; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Island FC</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--red:#E31C23;--red-dark:#A81419;--red-deep:#7A0F13;--black:#0A0A0A;--card:#121212;--elevated:#1A1A1A;--text:#fff;--muted:#999;--border:rgba(255,255,255,.08);--font:'Outfit',sans-serif;--body:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--black);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-top{background:var(--red);padding:8px 0;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-align:center;color:#fff}
+.nav-main{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:transparent;transition:all .3s}
+.nav.scrolled .nav-main{background:rgba(10,10,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 48px}
+.nav-logo,.footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.nav-logo img{height:48px;width:auto;object-fit:contain}
+.nav-logo span,.footer-logo span{font-family:var(--font);font-weight:800;font-size:1.15rem;text-transform:uppercase}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a,.footer-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;font-weight:600;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.footer-links a:hover{color:var(--red)}
+.nav-cta{background:var(--red);color:#fff;padding:10px 22px;border-radius:4px;font-weight:700;font-size:.85rem;text-decoration:none;text-transform:uppercase;letter-spacing:.04em}
+.hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:0 48px 80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(10,10,10,.5) 50%,rgba(10,10,10,.98) 100%),linear-gradient(90deg,rgba(227,28,35,.4) 0%,transparent 55%),radial-gradient(ellipse at 70% 30%,rgba(227,28,35,.12) 0%,transparent 50%);z-index:1}
+.hero-bg:before{content:'';position:absolute;inset:0;background:url('/logo.png') center 40%/42% no-repeat;opacity:.07;filter:grayscale(1)}
+.hero-content{position:relative;z-index:2;max-width:700px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(227,28,35,.25);border:1px solid rgba(227,28,35,.4);color:#ff6b6b;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.hero h1{font-family:var(--font);font-size:clamp(3.5rem,9vw,6.5rem);font-weight:900;line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:20px}
+.hero h1 span,.section-header h2 span{color:var(--red)}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:480px;margin-bottom:32px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:4px;font-weight:700;font-size:.9rem;text-decoration:none;text-transform:uppercase;letter-spacing:.04em;border:none;cursor:pointer}
+.btn-red{background:var(--red);color:#fff}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.next-match-bar{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:3px solid #fff}
+.next-match-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.next-match-teams{display:flex;align-items:center;gap:16px;font-family:var(--font);font-weight:800;font-size:1.1rem;text-transform:uppercase}
+.next-match-teams img{width:36px;height:36px;object-fit:contain}
+.next-match-vs{color:rgba(255,255,255,.6);font-size:.85rem}
+.next-match-meta{font-size:.85rem;color:rgba(255,255,255,.85);text-align:right}
+.next-match-meta strong{display:block;color:#fff;font-size:.95rem}
+section{padding:80px 48px;max-width:1280px;margin:0 auto}
+.section-header{margin-bottom:40px}
+.section-header h2{font-family:var(--font);font-size:2.2rem;font-weight:800;text-transform:uppercase;letter-spacing:-.02em}
+.section-tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.match-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .3s}
+.match-card:hover{border-color:rgba(227,28,35,.5);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.match-card-top{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:10px 18px;display:flex;justify-content:space-between;align-items:center}
+.match-card-top.past{background:#1a1a1a;border-bottom:1px solid var(--border)}
+.match-badge{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.match-badge.final{color:var(--muted)}
+.match-date-sm{font-size:.75rem;color:rgba(255,255,255,.7)}
+.match-body{padding:28px 20px}
+.match-teams-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.team-block{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.team-block img{width:56px;height:56px;object-fit:contain}
+.team-block h3{font-family:var(--font);font-size:.9rem;font-weight:700;line-height:1.25;max-width:120px}
+.team-block .role{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.match-center{flex-shrink:0;text-align:center;min-width:60px}
+.match-center .vs{font-family:var(--font);font-weight:800;font-size:1rem;color:var(--red);opacity:.8}
+.match-center .score{font-family:var(--font);font-weight:900;font-size:1.75rem;color:var(--red)}
+.match-footer{border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:8px}
+.match-info-row{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
+.match-info-row i{width:14px;height:14px;color:var(--red);flex-shrink:0}
+.match-info-row strong{color:#fff;font-weight:600}
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:8px}
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.player-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 16px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.player-card:hover{border-color:rgba(227,28,35,.5);transform:translateY(-4px)}
+.player-card:before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+.player-photo,.player-photo-placeholder{width:88px;height:88px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.player-photo{object-fit:cover;border:3px solid var(--red);background:#1a1a1a}
+.player-photo-placeholder{background:#1a1a1a;border:3px solid #333;font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--red)}
+.player-number{font-family:var(--font);font-size:.85rem;font-weight:800;color:var(--red);letter-spacing:.05em;margin-bottom:4px}
+.player-name{font-family:var(--font);font-size:1rem;font-weight:700;margin-bottom:4px}
+.player-pos{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.contact-section{background:linear-gradient(135deg,rgba(227,28,35,.15) 0%,transparent 60%);border:1px solid rgba(227,28,35,.25);border-radius:12px;padding:64px 40px;text-align:center;margin:0 48px 80px;max-width:1280px;margin-left:auto;margin-right:auto}
+.contact-section h2{font-family:var(--font);font-size:clamp(2rem,5vw,3rem);font-weight:800;text-transform:uppercase;margin-bottom:12px}
+.contact-section p{color:var(--muted);max-width:480px;margin:0 auto 32px;font-size:1.05rem}
+.socials{display:flex;justify-content:center;gap:14px}
+.social-btn{width:52px;height:52px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none}
+.social-btn:hover{background:var(--red);border-color:var(--red);transform:translateY(-3px)}
+footer{background:#050505;border-top:1px solid var(--border);padding:48px 48px 32px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;margin-bottom:32px}
+.footer-logo img{height:44px}
+.footer-links{display:flex;gap:28px}
+.footer-links a{color:var(--muted);font-size:.85rem;letter-spacing:.04em}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);flex-wrap:wrap;gap:12px}
+.fade-up{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.nav-main{padding:14px 20px}.nav-links{display:none}.hero{padding:0 20px 60px;align-items:center}.hero-content{text-align:center}.hero p{margin-inline:auto}.hero-actions{justify-content:center}.next-match-bar{padding:16px 20px;flex-direction:column;text-align:center}.next-match-meta{text-align:center}section{padding:60px 20px}.contact-section{margin:0 20px 60px;padding:48px 24px}footer{padding:40px 20px 24px}.footer-inner{flex-direction:column;text-align:center}.footer-links{justify-content:center}}
+</style>
 </head>
 <body>
-    <header class="nav" id="nav">
-        <div class="nav-top">Rock Island FC · Red &amp; Black</div>
-        <div class="nav-main">
-            <a href="/" class="nav-logo">
-                <img src="/logo.png" alt="Rock Island FC">
-                <span>Rock Island FC</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#matches">Fixtures</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#players">Players</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <a href="#contact" class="nav-cta">Join the Club</a>
+<header class="nav" id="nav">
+  <div class="nav-top">Rock Island FC · Red &amp; Black</div>
+  <div class="nav-main">
+    <a href="/" class="nav-logo"><img src="/logo.png" alt="Rock Island FC"><span>Rock Island FC</span></a>
+    <ul class="nav-links">
+      <li><a href="#matches">Fixtures</a></li><li><a href="#results">Results</a></li><li><a href="#players">Players</a></li><li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Join the Club</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i data-lucide="shield" style="width:12px;height:12px"></i> Official Club Site</div>
+    <h1>Rock Island<br><span>Football Club</span></h1>
+    <p>Developing young athletes. Building community. Playing with pride in red and black.</p>
+    <div class="hero-actions"><a href="#matches" class="btn btn-red">View Fixtures <i data-lucide="arrow-right" style="width:16px"></i></a><a href="#players" class="btn btn-outline">Our Squad</a></div>
+  </div>
+</section>
+
+<div class="next-match-bar" id="nextMatchBar" style="display:none">
+  <div><div class="next-match-label">Next Match</div></div>
+  <div class="next-match-teams" id="nextMatchTeams"></div>
+  <div class="next-match-meta" id="nextMatchMeta"></div>
+</div>
+
+<section id="matches">
+  <div class="section-header fade-up"><div class="section-tag">The Schedule</div><h2>Upcoming <span>Fixtures</span></h2></div>
+  <div class="matches-grid" id="upcomingContainer"><div class="empty-state">Loading fixtures...</div></div>
+</section>
+<section id="results">
+  <div class="section-header fade-up"><div class="section-tag">Recent Form</div><h2>Last <span>Matches</span></h2></div>
+  <div class="matches-grid" id="pastContainer"><div class="empty-state">Loading results...</div></div>
+</section>
+<section id="players">
+  <div class="section-header fade-up"><div class="section-tag">The Squad</div><h2>Our <span>Players</span></h2></div>
+  <div class="players-grid" id="playersContainer"><div class="empty-state">Loading squad...</div></div>
+</section>
+
+<div class="contact-section fade-up" id="contact">
+  <div class="section-tag" style="margin-bottom:8px">Get Involved</div>
+  <h2>Join Rock Island FC</h2>
+  <p>Ready to take your game to the next level? Follow us or reach out to start your journey with Rock Island FC.</p>
+  <div class="socials">
+    <a href="https://www.facebook.com/share/14cxWmMgvTL/" target="_blank" rel="noopener" class="social-btn"><i data-lucide="facebook"></i></a>
+    <a href="https://www.instagram.com/rockislandfutbolrebls?igsh=MWYwcGdraDI2MjN2aQ==" target="_blank" rel="noopener" class="social-btn"><i data-lucide="instagram"></i></a>
+    <a href="mailto:info@rockislandfc.com" class="social-btn"><i data-lucide="mail"></i></a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/logo.png" alt="RIFC"><span>Rock Island FC</span></a>
+    <div class="footer-links"><a href="#matches">Fixtures</a><a href="#results">Results</a><a href="#players">Players</a><a href="#contact">Contact</a></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Rock Island FC. All rights reserved.</p><p>Red &amp; Black · RIFC</p></div>
+</footer>
+
+<script>
+(() => {
+  const SUPABASE_URL = 'https://rpraezlikhlzvfxkzrmj.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  lucide.createIcons();
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    })[char]);
+  }
+
+  function formatDate(value) {
+    if (!value) return 'Date TBA';
+    const date = new Date(value + 'T12:00:00');
+    if (Number.isNaN(date.getTime())) return 'Date TBA';
+    return date.toLocaleDateString('en-US', {
+      weekday:'short', month:'short', day:'numeric', year:'numeric'
+    });
+  }
+
+  function formatTime(value) {
+    if (!value) return 'Time TBA';
+    const parts = String(value).split(':');
+    const hour = Number(parts[0]);
+    if (!Number.isFinite(hour)) return esc(value);
+    const minute = (parts[1] || '00').slice(0, 2);
+    return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+  }
+
+  function buildCard(match, isPast) {
+    const isHome = match.side === 'home';
+    const opponent = esc(match.opponent || 'Opponent');
+    const logo = esc(match.logo || '');
+    const location = esc(match.location || 'Location TBA');
+
+    const homeTeam = `
+      <div class="team-block">
+        <img src="/logo.png" alt="RIFC">
+        <h3>Rock Island FC</h3><span class="role">${isHome ? 'Home' : 'Away'}</span>
+      </div>`;
+    const awayTeam = `
+      <div class="team-block">
+        ${logo ? `<img src="${logo}" alt="${opponent}" onerror="this.style.opacity=.35">` : `<div class="player-photo-placeholder">?</div>`}
+        <h3>${opponent}</h3><span class="role">${isHome ? 'Away' : 'Home'}</span>
+      </div>`;
+
+    const left = isHome ? homeTeam : awayTeam;
+    const right = isHome ? awayTeam : homeTeam;
+    const center = isPast
+      ? `<div class="match-center"><div class="score">${match.score_us ?? 0} – ${match.score_them ?? 0}</div></div>`
+      : `<div class="match-center"><div class="vs">VS</div></div>`;
+
+    return `
+      <article class="match-card fade-up">
+        <div class="match-card-top ${isPast ? 'past' : ''}">
+          <span class="match-badge ${isPast ? 'final' : ''}">${isPast ? 'Full Time' : (isHome ? 'Home' : 'Away')}</span>
+          <span class="match-date-sm">${formatDate(match.date)}</span>
         </div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <div class="hero-badge"><i data-lucide="shield" style="width:12px;height:12px"></i> Official Club Site</div>
-            <h1>Rock Island<br><span>Football Club</span></h1>
-            <p>Developing young athletes. Building community. Playing with pride in red and black.</p>
-            <div class="hero-actions">
-                <a href="#matches" class="btn btn-red">View Fixtures <i data-lucide="arrow-right" style="width:16px"></i></a>
-                <a href="#players" class="btn btn-outline">Our Squad</a>
-            </div>
+        <div class="match-body">
+          <div class="match-teams-row">${left}${center}${right}</div>
+          <div class="match-footer">
+            <div class="match-info-row"><i data-lucide="clock"></i><span><strong>${formatTime(match.time)}</strong></span></div>
+            <div class="match-info-row"><i data-lucide="map-pin"></i><span>${location}</span></div>
+          </div>
         </div>
-    </section>
+      </article>`;
+  }
 
-    <div class="next-match-bar" id="nextMatchBar" style="display:none;">
-        <div><div class="next-match-label">Next Match</div></div>
-        <div class="next-match-teams" id="nextMatchTeams"></div>
-        <div class="next-match-meta" id="nextMatchMeta"></div>
-    </div>
+  function renderMatches(matches) {
+    const upcoming = matches
+      .filter(match => match.status !== 'past')
+      .sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+    const past = matches
+      .filter(match => match.status === 'past')
+      .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 
-    <section id="matches">
-        <div class="section-header fade-up">
-            <div class="section-tag">The Schedule</div>
-            <h2>Upcoming <span>Fixtures</span></h2>
-        </div>
-        <div class="matches-grid" id="upcomingContainer"><div class="empty-state">Loading...</div></div>
-    </section>
+    document.getElementById('upcomingContainer').innerHTML = upcoming.length
+      ? upcoming.map(match => buildCard(match, false)).join('')
+      : '<div class="empty-state">No upcoming fixtures scheduled</div>';
 
-    <section id="results">
-        <div class="section-header fade-up">
-            <div class="section-tag">Recent Form</div>
-            <h2>Last <span>Matches</span></h2>
-        </div>
-        <div class="matches-grid" id="pastContainer"><div class="empty-state">Loading...</div></div>
-    </section>
+    document.getElementById('pastContainer').innerHTML = past.length
+      ? past.map(match => buildCard(match, true)).join('')
+      : '<div class="empty-state">No recent results yet</div>';
 
-    <section id="players">
-        <div class="section-header fade-up">
-            <div class="section-tag">The Squad</div>
-            <h2>Our <span>Players</span></h2>
-        </div>
-        <div class="players-grid" id="playersContainer"><div class="empty-state">Loading squad...</div></div>
-    </section>
+    const bar = document.getElementById('nextMatchBar');
+    if (!upcoming.length) {
+      bar.style.display = 'none';
+      return;
+    }
 
-    <div class="contact-section fade-up" id="contact">
-        <div class="section-tag" style="margin-bottom:8px;">Get Involved</div>
-        <h2>Join Rock Island FC</h2>
-        <p>Ready to take your game to the next level? Follow us or reach out to start your journey with Rock Island FC.</p>
-        <div class="socials">
-            <a href="https://www.facebook.com/share/14cxWmMgvTL/" target="_blank" class="social-btn"><i data-lucide="facebook"></i></a>
-            <a href="https://www.instagram.com/rockislandfutbolrebls?igsh=MWYwcGdraDI2MjN2aQ==" target="_blank" class="social-btn"><i data-lucide="instagram"></i></a>
-            <a href="mailto:info@rockislandfc.com" class="social-btn"><i data-lucide="mail"></i></a>
-        </div>
-    </div>
+    const next = upcoming[0];
+    const isHome = next.side === 'home';
+    bar.style.display = 'flex';
+    document.getElementById('nextMatchTeams').innerHTML = isHome
+      ? `<img src="/logo.png" alt="RIFC"><span>RIFC</span><span class="next-match-vs">vs</span><span>${esc(next.opponent || 'Opponent')}</span>`
+      : `<span>${esc(next.opponent || 'Opponent')}</span><span class="next-match-vs">vs</span><img src="/logo.png" alt="RIFC"><span>RIFC</span>`;
+    document.getElementById('nextMatchMeta').innerHTML =
+      `<strong>${formatDate(next.date)} · ${formatTime(next.time)}</strong>${esc(next.location || 'Location TBA')}`;
+  }
 
-    <footer>
-        <div class="footer-inner">
-            <a href="/" class="footer-logo"><img src="/logo.png" alt="RIFC"><span>Rock Island FC</span></a>
-            <div class="footer-links">
-                <a href="#matches">Fixtures</a>
-                <a href="#results">Results</a>
-                <a href="#players">Players</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 Rock Island FC. All rights reserved.</p>
-            <p>Red &amp; Black · RIFC</p>
-        </div>
-    </footer>
+  function renderPlayers(players) {
+    players.sort((a, b) =>
+      (parseInt(a.number, 10) || 99) - (parseInt(b.number, 10) || 99)
+    );
 
-    <script>
-        lucide.createIcons();
-        window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40));
-        const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.12 });
-        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+    document.getElementById('playersContainer').innerHTML = players.length
+      ? players.map(player => `
+          <div class="player-card fade-up">
+            ${player.photo
+              ? `<img class="player-photo" src="${esc(player.photo)}" alt="${esc(player.name || 'Player')}">`
+              : `<div class="player-photo-placeholder">${esc(player.number || '?')}</div>`}
+            <div class="player-number">#${esc(player.number || '–')}</div>
+            <div class="player-name">${esc(player.name || 'Player')}</div>
+            <div class="player-pos">${esc(player.position || '')}</div>
+          </div>
+        `).join('')
+      : '<div class="empty-state">Squad coming soon</div>';
+  }
 
-        function getMatches() { try { return JSON.parse(localStorage.getItem('rifc_matches') || '[]'); } catch { return []; } }
-        function getPlayers() { try { return JSON.parse(localStorage.getItem('rifc_players') || '[]'); } catch { return []; } }
+  async function loadWebsite() {
+    const upcomingBox = document.getElementById('upcomingContainer');
+    const pastBox = document.getElementById('pastContainer');
+    const playersBox = document.getElementById('playersContainer');
 
-        function formatDate(d) {
-            return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-        }
-        function formatTime(t) {
-            const [h, m] = t.split(':');
-            const hour = parseInt(h);
-            return (hour % 12 || 12) + ':' + m + ' ' + (hour >= 12 ? 'PM' : 'AM');
-        }
+    try {
+      const [matchesResponse, playersResponse] = await Promise.all([
+        db.from('matches').select('*').order('date', { ascending: true }),
+        db.from('players').select('*').order('created_at', { ascending: true })
+      ]);
 
-        function buildCard(m, isPast) {
-            const isHome = m.side === 'home';
-            const left = isHome
-                ? `<div class="team-block"><img src="/logo.png" alt="RIFC"><h3>Rock Island FC</h3><span class="role">Home</span></div>`
-                : `<div class="team-block"><img src="${m.logo || ''}" alt="${m.opponent}" onerror="this.style.opacity=0.35"><h3>${m.opponent}</h3><span class="role">Home</span></div>`;
-            const right = isHome
-                ? `<div class="team-block"><img src="${m.logo || ''}" alt="${m.opponent}" onerror="this.style.opacity=0.35"><h3>${m.opponent}</h3><span class="role">Away</span></div>`
-                : `<div class="team-block"><img src="/logo.png" alt="RIFC"><h3>Rock Island FC</h3><span class="role">Away</span></div>`;
-            const center = isPast
-                ? `<div class="match-center"><div class="score">${m.scoreUs} – ${m.scoreThem}</div></div>`
-                : `<div class="match-center"><div class="vs">VS</div></div>`;
-            return `<article class="match-card fade-up">
-                <div class="match-card-top ${isPast ? 'past' : ''}">
-                    <span class="match-badge ${isPast ? 'final' : ''}">${isPast ? 'Full Time' : (isHome ? 'Home' : 'Away')}</span>
-                    <span class="match-date-sm">${formatDate(m.date)}</span>
-                </div>
-                <div class="match-body">
-                    <div class="match-teams-row">${left}${center}${right}</div>
-                    <div class="match-footer">
-                        <div class="match-info-row"><i data-lucide="clock"></i><span><strong>${formatTime(m.time)}</strong> CDT</span></div>
-                        <div class="match-info-row"><i data-lucide="map-pin"></i><span>${m.location}</span></div>
-                    </div>
-                </div>
-            </article>`;
-        }
+      if (matchesResponse.error) throw matchesResponse.error;
+      if (playersResponse.error) throw playersResponse.error;
 
-        function render() {
-            const all = getMatches();
-            const upcoming = all.filter(m => m.status !== 'past');
-            const past = all.filter(m => m.status === 'past').reverse();
-            const players = getPlayers().sort((a, b) => (parseInt(a.number) || 99) - (parseInt(b.number) || 99));
+      renderMatches(matchesResponse.data || []);
+      renderPlayers(playersResponse.data || []);
 
-            document.getElementById('upcomingContainer').innerHTML = upcoming.length
-                ? upcoming.map(m => buildCard(m, false)).join('')
-                : '<div class="empty-state">No upcoming fixtures scheduled</div>';
-            document.getElementById('pastContainer').innerHTML = past.length
-                ? past.map(m => buildCard(m, true)).join('')
-                : '<div class="empty-state">No recent results yet</div>';
+      lucide.createIcons();
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    } catch (error) {
+      console.error('Rock Island FC Supabase error:', error);
+      upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
+      pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
+      playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
+    }
+  }
 
-            document.getElementById('playersContainer').innerHTML = players.length
-                ? players.map(p => `
-                    <div class="player-card fade-up">
-                        ${p.photo
-                            ? `<img class="player-photo" src="${p.photo}" alt="${p.name}">`
-                            : `<div class="player-photo-placeholder">${p.number || '?'}</div>`}
-                        <div class="player-number">#${p.number || '–'}</div>
-                        <div class="player-name">${p.name}</div>
-                        <div class="player-pos">${p.position || ''}</div>
-                    </div>`).join('')
-                : '<div class="empty-state">Squad coming soon</div>';
-
-            if (upcoming.length) {
-                const n = upcoming[0];
-                document.getElementById('nextMatchBar').style.display = 'flex';
-                const isHome = n.side === 'home';
-                document.getElementById('nextMatchTeams').innerHTML = isHome
-                    ? `<img src="/logo.png"><span>RIFC</span><span class="next-match-vs">vs</span><span>${n.opponent}</span>`
-                    : `<span>${n.opponent}</span><span class="next-match-vs">vs</span><img src="/logo.png"><span>RIFC</span>`;
-                document.getElementById('nextMatchMeta').innerHTML = `<strong>${formatDate(n.date)} · ${formatTime(n.time)}</strong>${n.location}`;
-            }
-
-            lucide.createIcons();
-            document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-        }
-        render();
-    </script>
+  loadWebsite();
+})();
+</script>
 </body>
 </html>
