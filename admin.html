@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -52,21 +53,37 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 .pitch-player{position:absolute;transform:translate(-50%,-50%);width:65px;text-align:center;z-index:5;cursor:grab;user-select:none;touch-action:none}
 .pitch-shirt{width:36px;height:36px;margin:auto;background:#e31c23;border:2px solid white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 8px #000}
 .pitch-name{font-size:11px;font-weight:800;color:white;text-shadow:1px 1px 3px black;margin-top:3px;white-space:nowrap}
-@media(max-width:650px){body{padding:13px}.form-grid,.lineup-grid{grid-template-columns:1fr}.full{grid-column:auto}.form-card{padding:15px}}
+.highlight-item{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.highlight-media{width:120px;height:100px;object-fit:cover;background:#080808;border-radius:7px}
+.highlight-caption{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:650px){
+ body{padding:13px}
+ .form-grid,.lineup-grid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .form-card{padding:15px}
+ .highlight-item{grid-template-columns:85px 1fr}
+ .highlight-media{width:85px;height:85px}
+}
 </style>
 </head>
 <body>
-<div class="wrap"><div class="login-wrap" id="loginScreen">
+<div class="wrap">
+
+<div class="login-wrap" id="loginScreen">
 <img src="/logo.png" alt="RIFC">
 <h1>Admin Login</h1>
 <p>Rock Island FC · Match &amp; Squad Manager</p>
 <form id="loginForm">
-<label>Email</label><input id="email" type="email" autocomplete="username" required placeholder="Admin email">
-<label>Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Password">
+<label>Email</label>
+<input id="email" type="email" autocomplete="username" required placeholder="Admin email">
+<label>Password</label>
+<input id="password" type="password" autocomplete="current-password" required placeholder="Password">
 <button class="btn" type="submit">Sign In</button>
 </form>
 <p class="error" id="loginError"></p>
-</div><div class="dashboard" id="dashboard">
+</div>
+
+<div class="dashboard" id="dashboard">
 <div class="dash-header">
 <h1>Rock Island FC Admin</h1>
 <div class="actions">
@@ -74,11 +91,18 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 <button class="btn secondary" id="logoutBtn">Logout</button>
 </div>
 </div>
-<div class="status" id="status"></div><div class="tabs">
+
+<div class="status" id="status"></div>
+
+<div class="tabs">
 <button class="tab active" data-panel="matches">Matches</button>
 <button class="tab" data-panel="players">Players</button>
 <button class="tab" data-panel="lineup">Starting XI</button>
-</div><div class="panel active" id="panel-matches">
+<button class="tab" data-panel="highlights">Highlights</button>
+</div>
+
+<!-- MATCHES -->
+<div class="panel active" id="panel-matches">
 <div class="form-card">
 <h2 id="matchTitle">Add Match</h2>
 <form id="matchForm">
@@ -91,7 +115,11 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 <div><label>Home / Away</label><select id="matchSide"><option value="home">Home</option><option value="away">Away</option></select></div>
 <div><label>RIFC score (past matches)</label><input type="number" id="scoreUs" min="0"></div>
 <div><label>Opponent score</label><input type="number" id="scoreThem" min="0"></div>
-<div class="full"><label>Opponent logo</label><input type="file" id="matchLogo" accept="image/*"><img id="matchLogoPreview" class="preview hidden" alt="Logo preview"></div>
+<div class="full">
+<label>Opponent logo</label>
+<input type="file" id="matchLogo" accept="image/*">
+<img id="matchLogoPreview" class="preview hidden" alt="Logo preview">
+</div>
 </div>
 <div class="actions">
 <button class="btn" type="submit" id="matchSubmit">Add Match</button>
@@ -99,20 +127,34 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </div>
 </form>
 </div>
-<div class="section-label">Upcoming fixtures</div><div class="list" id="upcomingList"></div>
-<div class="section-label">Past results</div><div class="list" id="pastList"></div>
-</div><div class="panel" id="panel-players">
+<div class="section-label">Upcoming fixtures</div>
+<div class="list" id="upcomingList"></div>
+<div class="section-label">Past results</div>
+<div class="list" id="pastList"></div>
+</div>
+
+<!-- PLAYERS -->
+<div class="panel" id="panel-players">
 <div class="form-card">
 <h2 id="playerTitle">Add Player</h2>
 <form id="playerForm">
 <div class="form-grid">
 <div><label>Player name</label><input id="playerName" required></div>
 <div><label>Squad number</label><input id="playerNumber" type="number" min="0" max="99"></div>
-<div><label>Position</label><select id="playerPosition"><option>Goalkeeper</option><option>Defender</option><option>Midfielder</option><option>Forward</option><option>Winger</option><option>Striker</option></select></div>
+<div>
+<label>Position</label>
+<select id="playerPosition">
+<option>Goalkeeper</option><option>Defender</option><option>Midfielder</option><option>Forward</option><option>Winger</option><option>Striker</option>
+</select>
+</div>
 <div><label>Age</label><input id="playerAge" type="number" min="1" max="99"></div>
 <div><label>Nationality</label><input id="playerNationality" placeholder="Optional"></div>
 <div class="full"><label>Player bio</label><textarea id="playerBio" placeholder="Short player profile"></textarea></div>
-<div class="full"><label>Player photo</label><input type="file" id="playerPhoto" accept="image/*"><img id="playerPhotoPreview" class="preview hidden" alt="Photo preview"></div>
+<div class="full">
+<label>Player photo</label>
+<input type="file" id="playerPhoto" accept="image/*">
+<img id="playerPhotoPreview" class="preview hidden" alt="Photo preview">
+</div>
 </div>
 <div class="actions">
 <button class="btn" type="submit" id="playerSubmit">Add Player</button>
@@ -120,8 +162,12 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </div>
 </form>
 </div>
-<div class="section-label">Squad</div><div class="list" id="playersList"></div>
-</div><div class="panel" id="panel-lineup">
+<div class="section-label">Squad</div>
+<div class="list" id="playersList"></div>
+</div>
+
+<!-- STARTING XI -->
+<div class="panel" id="panel-lineup">
 <div class="form-card">
 <h2>Starting XI Manager</h2>
 <p class="hint">Choose your formation and select 11 players from your squad</p>
@@ -155,8 +201,32 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </div>
 <p class="hint" id="lineupHint">Your saved lineup will appear on the public website</p>
 </div>
-</div></div>
-</div><script>
+</div>
+
+<!-- HIGHLIGHTS -->
+<div class="panel" id="panel-highlights">
+<div class="form-card">
+<h2>Upload Highlight</h2>
+<p class="hint">Upload a photo or video and add a caption for the public Highlights feed</p>
+<form id="highlightForm">
+<label>Photo or video</label>
+<input type="file" id="highlightFile" accept="image/*,video/*" required>
+<label>Caption</label>
+<textarea id="highlightCaption" maxlength="500" placeholder="Write a caption for this highlight..."></textarea>
+<div class="actions">
+<button class="btn" type="submit" id="highlightSubmit">Upload Highlight</button>
+</div>
+<p class="hint">Maximum file size: 50 MB</p>
+</form>
+</div>
+<div class="section-label">Published highlights</div>
+<div class="list" id="highlightsList"></div>
+</div>
+
+</div>
+</div>
+
+<script>
 const SUPABASE_URL="https://rpraezlikhlzvfxkzrmj.supabase.co";
 const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
@@ -185,7 +255,7 @@ async function requireAdmin(){
 async function showDashboard(){
  $('loginScreen').style.display='none';
  $('dashboard').style.display='block';
- await Promise.all([loadMatches(),loadPlayers(),loadLineup()]);
+ await Promise.all([loadMatches(),loadPlayers(),loadLineup(),loadHighlights()]);
 }
 
 $('loginForm').addEventListener('submit',async e=>{
@@ -556,10 +626,159 @@ $('resetPositions').onclick=()=>{
  $('lineupHint').textContent='Positions reset. Save to update the website';
 };
 
+/* HIGHLIGHTS MANAGER */
+
+async function loadHighlights(){
+ const {data,error}=await db.from('highlights').select('*').order('created_at',{ascending:false});
+ if(error){
+  $('highlightsList').innerHTML='<div class="item">Could not load highlights: '+esc(error.message)+'</div>';
+  return;
+ }
+ renderHighlights(data||[]);
+}
+
+function renderHighlights(items){
+ if(!items.length){
+  $('highlightsList').innerHTML='<div class="item">No highlights uploaded yet</div>';
+  return;
+ }
+
+ $('highlightsList').innerHTML=items.map(item=>{
+  const media=item.media_type==='video'
+   ?`<video class="highlight-media" src="${esc(item.media_url)}" muted playsinline preload="metadata"></video>`
+   :`<img class="highlight-media" src="${esc(item.media_url)}" alt="Highlight">`;
+
+  const date=item.created_at?new Date(item.created_at).toLocaleDateString():'';
+
+  return `<div class="item highlight-item">
+   ${media}
+   <div>
+    <strong>${item.media_type==='video'?'Video highlight':'Photo highlight'}</strong>
+    <div class="meta">${esc(date)}</div>
+    <p class="highlight-caption">${esc(item.caption||'No caption')}</p>
+    <button class="btn danger" onclick="deleteHighlight('${esc(item.id)}')">Delete</button>
+   </div>
+  </div>`;
+ }).join('');
+}
+
+$('highlightForm').onsubmit=async e=>{
+ e.preventDefault();
+
+ const file=$('highlightFile').files[0];
+ const caption=$('highlightCaption').value.trim();
+
+ if(!file){
+  say('Choose a photo or video first');
+  return;
+ }
+
+ const isImage=file.type.startsWith('image/');
+ const isVideo=file.type.startsWith('video/');
+
+ if(!isImage&&!isVideo){
+  say('Only image and video files are supported');
+  return;
+ }
+
+ if(file.size>50*1024*1024){
+  say('File must be under 50 MB');
+  return;
+ }
+
+ const button=$('highlightSubmit');
+ button.disabled=true;
+ button.textContent='Uploading...';
+
+ let storagePath=null;
+
+ try{
+  say('Uploading highlight...');
+
+  const ext=(file.name.split('.').pop()||'file').toLowerCase().replace(/[^a-z0-9]/g,'');
+  storagePath='highlights/'+crypto.randomUUID()+'.'+ext;
+
+  const {error:uploadError}=await db.storage
+   .from('rifc-media')
+   .upload(storagePath,file,{
+    upsert:false,
+    contentType:file.type
+   });
+
+  if(uploadError)throw uploadError;
+
+  const mediaUrl=db.storage.from('rifc-media').getPublicUrl(storagePath).data.publicUrl;
+
+  const {error:insertError}=await db.from('highlights').insert({
+   media_url:mediaUrl,
+   media_type:isVideo?'video':'image',
+   caption,
+   storage_path:storagePath
+  });
+
+  if(insertError)throw insertError;
+
+  $('highlightForm').reset();
+  await loadHighlights();
+  say('Highlight uploaded successfully');
+
+ }catch(err){
+  if(storagePath){
+   await db.storage.from('rifc-media').remove([storagePath]);
+  }
+  say('Could not upload highlight: '+err.message);
+ }finally{
+  button.disabled=false;
+  button.textContent='Upload Highlight';
+ }
+};
+
+window.deleteHighlight=async id=>{
+ if(!confirm('Delete this highlight?'))return;
+
+ try{
+  say('Deleting highlight...');
+
+  const {data:item,error:readError}=await db
+   .from('highlights')
+   .select('storage_path')
+   .eq('id',id)
+   .single();
+
+  if(readError)throw readError;
+
+  const {error:deleteError}=await db
+   .from('highlights')
+   .delete()
+   .eq('id',id);
+
+  if(deleteError)throw deleteError;
+
+  if(item?.storage_path){
+   const {error:storageError}=await db.storage
+    .from('rifc-media')
+    .remove([item.storage_path]);
+
+   if(storageError){
+    say('Highlight deleted but its stored file could not be removed: '+storageError.message);
+    await loadHighlights();
+    return;
+   }
+  }
+
+  await loadHighlights();
+  say('Highlight deleted');
+
+ }catch(err){
+  say('Could not delete highlight: '+err.message);
+ }
+};
+
 /* INITIAL LOAD */
 
 (async()=>{
  if(await requireAdmin())await showDashboard();
 })();
-</script></body>
+</script>
+</body>
 </html>
