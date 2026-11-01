@@ -27,7 +27,6 @@ body{font-family:var(--body);background:var(--black);color:var(--text);line-heig
 .nav-links a,.footer-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;font-weight:600;text-transform:uppercase;transition:color .2s}
 .nav-links a:hover,.footer-links a:hover{color:var(--red)}
 
-
 .hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:0 48px 80px;overflow:hidden;max-width:none;margin:0}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(10,10,10,.5) 50%,rgba(10,10,10,.98) 100%),linear-gradient(90deg,rgba(227,28,35,.4) 0%,transparent 55%),radial-gradient(ellipse at 70% 30%,rgba(227,28,35,.12) 0%,transparent 50%);z-index:1}
 .hero-bg:before{content:'';position:absolute;inset:0;background:url('/logo.png') center 40%/42% no-repeat;opacity:.07;filter:grayscale(1)}
@@ -90,6 +89,27 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .player-name{font-family:var(--font);font-size:1rem;font-weight:700;margin-bottom:4px}
 .player-pos{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
 
+/* STARTING XI */
+.lineup-section{padding-top:30px}
+.lineup-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.lineup-formation{background:rgba(227,28,35,.15);border:1px solid rgba(227,28,35,.35);color:#ff7777;padding:8px 16px;border-radius:5px;font-family:var(--font);font-weight:800;font-size:.9rem}
+.lineup-pitch{position:relative;overflow:hidden;background:linear-gradient(135deg,#123c27,#0b291b);border:2px solid rgba(255,255,255,.25);border-radius:12px;padding:30px 16px;margin-top:30px;min-height:420px}
+.pitch-lines{position:absolute;inset:12px;border:2px solid rgba(255,255,255,.25);border-radius:5px;pointer-events:none}
+.pitch-lines:before{content:'';position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.25)}
+.pitch-lines:after{content:'';position:absolute;width:110px;height:110px;border:2px solid rgba(255,255,255,.25);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.pitch-goal{position:absolute;left:50%;width:38%;height:35px;border:2px solid rgba(255,255,255,.25);transform:translateX(-50%)}
+.pitch-goal.top{top:12px;border-top:0}
+.pitch-goal.bottom{bottom:12px;border-bottom:0}
+.lineup-rows{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-around;gap:25px;min-height:360px}
+.lineup-row{display:flex;justify-content:center;align-items:center;gap:clamp(8px,3vw,30px);flex-wrap:wrap}
+.lineup-player{width:90px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px}
+.lineup-player-photo{width:54px;height:54px;border-radius:50%;border:2px solid #fff;background:#171717;object-fit:cover;box-shadow:0 3px 12px #0008}
+.lineup-player-placeholder{width:54px;height:54px;border-radius:50%;border:2px solid #fff;background:#171717;display:flex;align-items:center;justify-content:center;color:var(--red);font-family:var(--font);font-weight:900;font-size:1.2rem;box-shadow:0 3px 12px #0008}
+.lineup-player-name{font-size:.7rem;font-weight:800;color:#fff;text-shadow:0 2px 5px #000;line-height:1.2;max-width:90px;overflow-wrap:anywhere}
+.lineup-player-position{font-size:.6rem;font-weight:800;color:#fff;background:var(--red);padding:2px 6px;border-radius:3px;text-transform:uppercase}
+.lineup-status{margin-top:16px;text-align:center;color:var(--muted);font-size:.8rem}
+.lineup-section .empty-state{margin-top:20px}
+
 /* CONTACT PHOTO */
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .contact-photo{padding:0 20px 96px}
@@ -130,11 +150,16 @@ section{padding:60px 20px}
 footer{padding:40px 20px 24px}
 .footer-inner{flex-direction:column;text-align:center}
 .footer-links{justify-content:center}
+.lineup-section{padding-top:30px}
 }
 
 @media(max-width:480px){
 .nav-logo img{height:38px}
 .nav-logo span{font-size:.95rem}
+.lineup-pitch{padding:24px 8px}
+.lineup-player{width:76px}
+.lineup-player-photo,.lineup-player-placeholder{width:46px;height:46px}
+.lineup-player-name{font-size:.63rem;max-width:76px}
 }
 </style>
 </head>
@@ -149,6 +174,7 @@ footer{padding:40px 20px 24px}
 <li><a href="#matches">Fixtures</a></li>
 <li><a href="#results">Results</a></li>
 <li><a href="#players">Players</a></li>
+<li><a href="#lineup">Starting XI</a></li>
 </ul>
 </div>
 </header>
@@ -202,23 +228,41 @@ footer{padding:40px 20px 24px}
 </div>
 </section>
 
+<!-- STARTING XI SECTION -->
+<section id="lineup" class="lineup-section">
+<div class="section-header fade-up">
+<div class="section-tag">The Team</div>
+<div class="lineup-header">
+<h2 id="lineupTitle">Starting <span>XI</span></h2>
+<div class="lineup-formation" id="lineupFormation">4-3-3</div>
+</div>
+</div>
+<div id="lineupContainer">
+<div class="empty-state">Loading starting lineup...</div>
+</div>
+</section>
+
 <div class="contact-photo fade-up" id="contact">
 <div class="photo-frame"><img id="contactPhoto" alt="Rock Island FC"></div>
 </div>
+
 <script>
 (() => {
 const wrap = document.getElementById('contact');
 const img = document.getElementById('contactPhoto');
 const files = ['photo.png','photo.jpg','photo.jpeg'];
 let i = 0;
+
 img.onload = () => {
 wrap.querySelector('.photo-frame').style.setProperty('--r', img.naturalWidth / (img.naturalHeight || 1));
 wrap.classList.add('loaded');
 };
+
 img.onerror = () => {
 if(++i < files.length) img.src = files[i];
 else wrap.style.display = 'none';
 };
+
 img.src = files[0];
 })();
 </script>
@@ -230,6 +274,7 @@ img.src = files[0];
 <a href="#matches">Fixtures</a>
 <a href="#results">Results</a>
 <a href="#players">Players</a>
+<a href="#lineup">Starting XI</a>
 </div>
 </div>
 <div class="footer-bottom">
@@ -246,9 +291,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 function initIcons(){
-if(window.lucide){
-lucide.createIcons();
-}
+if(window.lucide) lucide.createIcons();
 }
 
 initIcons();
@@ -321,6 +364,7 @@ const right = isHome ? awayTeam : homeTeam;
 
 const us = match.score_us ?? 0;
 const them = match.score_them ?? 0;
+
 const center = isPast
 ? `<div class="match-center"><div class="score">${isHome ? us : them} – ${isHome ? them : us}</div></div>`
 : `<div class="match-center"><div class="vs">VS</div></div>`;
@@ -397,17 +441,120 @@ ${player.photo
 : '<div class="empty-state">Squad coming soon</div>';
 }
 
+/* STARTING XI FUNCTIONS */
+
+function getPlayerId(entry){
+if(typeof entry === 'string') return entry;
+return entry?.player_id || entry?.playerId || entry?.id || '';
+}
+
+function getPositionGroup(position){
+const p = String(position || '').toLowerCase();
+
+if(/goalkeeper|keeper|\bgk\b/.test(p)) return 'goalkeeper';
+if(/defen|back|\b(cb|lb|rb|lwb|rwb)\b/.test(p)) return 'defenders';
+if(/forward|strik|wing|\b(st|cf|lw|rw|fw)\b/.test(p)) return 'forwards';
+if(/mid|\b(cm|cdm|cam|lm|rm|dm|am)\b/.test(p)) return 'midfielders';
+
+return 'midfielders';
+}
+
+function renderLineup(lineup,players){
+const container = document.getElementById('lineupContainer');
+const title = document.getElementById('lineupTitle');
+const formation = document.getElementById('lineupFormation');
+
+if(!lineup || !Array.isArray(lineup.players) || !lineup.players.length){
+container.innerHTML = '<div class="empty-state">Starting lineup has not been announced yet</div>';
+return;
+}
+
+const playerMap = new Map(players.map(player => [String(player.id),player]));
+
+const selected = lineup.players
+.map(entry => {
+const id = getPlayerId(entry);
+const player = playerMap.get(String(id));
+
+if(!player) return null;
+
+return {
+player,
+position: typeof entry === 'object'
+? (entry.position || entry.slot || player.position || '')
+: (player.position || '')
+};
+})
+.filter(Boolean);
+
+if(!selected.length){
+container.innerHTML = '<div class="empty-state">The lineup could not be loaded. Check the selected players in admin.</div>';
+return;
+}
+
+title.innerHTML = `${esc(lineup.title || 'Starting XI')}`;
+formation.textContent = lineup.formation || '4-3-3';
+
+const groups = {
+forwards:[],
+midfielders:[],
+defenders:[],
+goalkeeper:[]
+};
+
+selected.forEach(item => {
+const group = getPositionGroup(item.position);
+groups[group].push(item);
+});
+
+function playerHTML(item){
+const player = item.player;
+const photo = player.photo
+? `<img class="lineup-player-photo" src="${esc(player.photo)}" alt="${esc(player.name || 'Player')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+: '';
+
+return `
+<div class="lineup-player">
+${photo}
+<div class="lineup-player-placeholder" ${photo ? 'style="display:none"' : ''}>${esc(player.number || '?')}</div>
+<div class="lineup-player-name">${esc(player.name || 'Player')}</div>
+<div class="lineup-player-position">${esc(item.position || 'Player')}</div>
+</div>`;
+}
+
+const row = group => groups[group].length
+? `<div class="lineup-row">${groups[group].map(playerHTML).join('')}</div>`
+: '';
+
+container.innerHTML = `
+<div class="lineup-pitch">
+<div class="pitch-lines"></div>
+<div class="pitch-goal top"></div>
+<div class="pitch-goal bottom"></div>
+<div class="lineup-rows">
+${row('forwards')}
+${row('midfielders')}
+${row('defenders')}
+${row('goalkeeper')}
+</div>
+</div>
+<div class="lineup-status">${selected.length} of 11 players shown</div>
+`;
+}
+
 async function loadWebsite(){
 const upcomingBox = document.getElementById('upcomingContainer');
 const pastBox = document.getElementById('pastContainer');
 const playersBox = document.getElementById('playersContainer');
+const lineupBox = document.getElementById('lineupContainer');
 
 try{
 if(!db) throw new Error('Supabase library failed to load');
 
-const [matchesResponse,playersResponse] = await Promise.all([
+const [matchesResponse,playersResponse,lineupResponse] = await Promise.all([
 db.from('matches').select('*').order('date',{ascending:true}),
-db.from('players').select('*').order('created_at',{ascending:true})
+db.from('players').select('*').order('created_at',{ascending:true}),
+db.from('lineups').select('*').eq('id','current').maybeSingle()
 ]);
 
 if(matchesResponse.error){
@@ -418,11 +565,21 @@ pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try
 renderMatches(matchesResponse.data || []);
 }
 
+let players = [];
+
 if(playersResponse.error){
 console.error('Rock Island FC players error:',playersResponse.error);
 playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
 }else{
-renderPlayers(playersResponse.data || []);
+players = playersResponse.data || [];
+renderPlayers(players);
+}
+
+if(lineupResponse.error){
+console.error('Rock Island FC lineup error:',lineupResponse.error);
+lineupBox.innerHTML = '<div class="empty-state">Could not load the starting lineup.</div>';
+}else{
+renderLineup(lineupResponse.data,players);
 }
 
 initIcons();
@@ -434,6 +591,7 @@ console.error('Rock Island FC Supabase error:',error);
 upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
 pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
 playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
+lineupBox.innerHTML = '<div class="empty-state">Could not load the starting lineup.</div>';
 }
 }
 
