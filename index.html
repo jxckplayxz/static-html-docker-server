@@ -31,3 +31,415 @@ body{font-family:var(--body);background:var(--black);color:var(--text);line-heig
 .hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:0 48px 80px;overflow:hidden;max-width:none;margin:0}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(10,10,10,.5) 50%,rgba(10,10,10,.98) 100%),linear-gradient(90deg,rgba(227,28,35,.4) 0%,transparent 55%),radial-gradient(ellipse at 70% 30%,rgba(227,28,35,.12) 0%,transparent 50%);z-index:1}
 .hero-bg:before{content:'';position:absolute;inset:0;background:url('/logo.png') center 40%/42% no-repeat;opacity:.07;filter:grayscale(1)}
+.hero-content{position:relative;z-index:2;max-width:700px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(227,28,35,.25);border:1px solid rgba(227,28,35,.4);color:#ff6b6b;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.hero-badge svg{width:14px;height:14px}
+.hero h1{font-family:var(--font);font-size:clamp(3.5rem,9vw,6.5rem);font-weight:900;line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:20px}
+.hero h1 span,.section-header h2 span{color:var(--red)}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:480px;margin-bottom:32px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:4px;font-weight:700;font-size:.9rem;text-decoration:none;text-transform:uppercase;letter-spacing:.04em;border:none;cursor:pointer}
+.btn svg{width:18px;height:18px}
+.btn-red{background:var(--red);color:#fff}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+
+.next-match-bar{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:3px solid #fff}
+.next-match-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.next-match-teams{display:flex;align-items:center;gap:16px;font-family:var(--font);font-weight:800;font-size:1.1rem;text-transform:uppercase}
+.next-match-teams img{width:36px;height:36px;object-fit:contain}
+.next-match-vs{color:rgba(255,255,255,.6);font-size:.85rem}
+.next-match-meta{font-size:.85rem;color:rgba(255,255,255,.85);text-align:right}
+.next-match-meta strong{display:block;color:#fff;font-size:.95rem}
+
+section{padding:80px 48px;max-width:1280px;margin:0 auto}
+.section-header{margin-bottom:40px}
+.section-header h2{font-family:var(--font);font-size:2.2rem;font-weight:800;text-transform:uppercase;letter-spacing:-.02em}
+.section-tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.match-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .3s}
+.match-card:hover{border-color:rgba(227,28,35,.5);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.match-card-top{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:10px 18px;display:flex;justify-content:space-between;align-items:center}
+.match-card-top.past{background:#1a1a1a;border-bottom:1px solid var(--border)}
+.match-badge{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.match-badge.final{color:var(--muted)}
+.match-date-sm{font-size:.75rem;color:rgba(255,255,255,.7)}
+.match-body{padding:28px 20px}
+.match-teams-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.team-block{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.team-block img{width:56px;height:56px;object-fit:contain}
+.team-block h3{font-family:var(--font);font-size:.9rem;font-weight:700;line-height:1.25;max-width:120px}
+.team-block .role{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.match-center{flex-shrink:0;text-align:center;min-width:60px}
+.match-center .vs{font-family:var(--font);font-weight:800;font-size:1rem;color:var(--red);opacity:.8}
+.match-center .score{font-family:var(--font);font-weight:900;font-size:1.75rem;color:var(--red)}
+.match-footer{border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:8px}
+.match-info-row{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
+.match-info-row svg{width:14px;height:14px;color:var(--red);flex-shrink:0}
+.match-info-row strong{color:#fff;font-weight:600}
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:8px}
+
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.player-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 16px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.player-card:hover{border-color:rgba(227,28,35,.5);transform:translateY(-4px)}
+.player-card:before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+.player-photo,.player-photo-placeholder{width:88px;height:88px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.player-photo{object-fit:cover;border:3px solid var(--red);background:#1a1a1a}
+.player-photo-placeholder{background:#1a1a1a;border:3px solid #333;font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--red)}
+.player-number{font-family:var(--font);font-size:.85rem;font-weight:800;color:var(--red);letter-spacing:.05em;margin-bottom:4px}
+.player-name{font-family:var(--font);font-size:1rem;font-weight:700;margin-bottom:4px}
+.player-pos{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+/* CONTACT PHOTO */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.contact-photo{padding:0 20px 96px}
+.contact-photo:not(.loaded) .photo-frame{display:none}
+.photo-frame{--r:1.5;position:relative;isolation:isolate;display:block;width:min(100%,1008px,calc(80vh * var(--r) + 8px));margin:0 auto;padding:4px;border-radius:20px;background:conic-gradient(from var(--a,0deg),var(--red-deep),var(--red) 18%,#fff 25%,var(--red) 32%,var(--red-deep) 50%,var(--red) 75%,var(--red-deep))}
+.photo-frame:after{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 0 36px 4px rgba(227,28,35,.55),0 0 90px 12px rgba(227,28,35,.28)}
+.photo-frame img{display:block;width:100%;height:auto;border-radius:16px;background:var(--card)}
+.contact-photo.visible .photo-frame{animation:frameIn 1.1s cubic-bezier(.16,1,.3,1) both,frameSpin 6s linear infinite}
+.contact-photo.visible .photo-frame:after{animation:frameGlow 3s ease-in-out infinite alternate}
+@keyframes frameIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes frameSpin{to{--a:360deg}}
+@keyframes frameGlow{from{opacity:.4}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.contact-photo .photo-frame,.contact-photo .photo-frame:after{animation:none!important}}
+
+footer{background:#050505;border-top:1px solid var(--border);padding:48px 48px 32px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;margin-bottom:32px}
+.footer-logo img{height:44px}
+.footer-links{display:flex;gap:28px}
+.footer-links a{color:var(--muted);font-size:.85rem;letter-spacing:.04em}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+.fade-up{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.match-card.visible:hover,.player-card.visible:hover{transform:translateY(-4px)}
+
+@media(max-width:900px){
+.nav-main{padding:14px 20px}
+.nav.scrolled .nav-main{padding:12px 20px}
+.nav-links{display:none}
+.hero{padding:0 20px 60px;align-items:center}
+.hero-content{text-align:center}
+.hero p{margin-inline:auto}
+.hero-actions{justify-content:center}
+.next-match-bar{padding:16px 20px;flex-direction:column;text-align:center}
+.next-match-meta{text-align:center}
+section{padding:60px 20px}
+.contact-photo{padding:0 20px 72px}
+footer{padding:40px 20px 24px}
+.footer-inner{flex-direction:column;text-align:center}
+.footer-links{justify-content:center}
+}
+
+@media(max-width:480px){
+.nav-logo img{height:38px}
+.nav-logo span{font-size:.95rem}
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav" id="nav">
+<div class="nav-top">Rock Island FC · Red &amp; Black</div>
+<div class="nav-main">
+<a href="/" class="nav-logo"><img src="/logo.png" alt="Rock Island FC"><span>Rock Island FC</span></a>
+<ul class="nav-links">
+<li><a href="#matches">Fixtures</a></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#players">Players</a></li>
+</ul>
+</div>
+</header>
+
+<section class="hero">
+<div class="hero-bg"></div>
+<div class="hero-content">
+<div class="hero-badge"><i data-lucide="shield"></i> Official Club Site</div>
+<h1>Rock Island<br><span>Football Club</span></h1>
+<p>Developing young athletes. Building community. Playing with pride in red and black.</p>
+<div class="hero-actions">
+<a href="#matches" class="btn btn-red">View Fixtures <i data-lucide="arrow-right"></i></a>
+<a href="#players" class="btn btn-outline">Our Squad</a>
+</div>
+</div>
+</section>
+
+<div class="next-match-bar" id="nextMatchBar" style="display:none">
+<div><div class="next-match-label">Next Match</div></div>
+<div class="next-match-teams" id="nextMatchTeams"></div>
+<div class="next-match-meta" id="nextMatchMeta"></div>
+</div>
+
+<section id="matches">
+<div class="section-header fade-up">
+<div class="section-tag">The Schedule</div>
+<h2>Upcoming <span>Fixtures</span></h2>
+</div>
+<div class="matches-grid" id="upcomingContainer">
+<div class="empty-state">Loading fixtures...</div>
+</div>
+</section>
+
+<section id="results">
+<div class="section-header fade-up">
+<div class="section-tag">Recent Form</div>
+<h2>Last <span>Matches</span></h2>
+</div>
+<div class="matches-grid" id="pastContainer">
+<div class="empty-state">Loading results...</div>
+</div>
+</section>
+
+<section id="players">
+<div class="section-header fade-up">
+<div class="section-tag">The Squad</div>
+<h2>Our <span>Players</span></h2>
+</div>
+<div class="players-grid" id="playersContainer">
+<div class="empty-state">Loading squad...</div>
+</div>
+</section>
+
+<div class="contact-photo fade-up" id="contact">
+<div class="photo-frame"><img id="contactPhoto" alt="Rock Island FC"></div>
+</div>
+<script>
+(() => {
+const wrap = document.getElementById('contact');
+const img = document.getElementById('contactPhoto');
+const files = ['photo.png','photo.jpg','photo.jpeg'];
+let i = 0;
+img.onload = () => {
+wrap.querySelector('.photo-frame').style.setProperty('--r', img.naturalWidth / (img.naturalHeight || 1));
+wrap.classList.add('loaded');
+};
+img.onerror = () => {
+if(++i < files.length) img.src = files[i];
+else wrap.style.display = 'none';
+};
+img.src = files[0];
+})();
+</script>
+
+<footer>
+<div class="footer-inner">
+<a href="/" class="footer-logo"><img src="/logo.png" alt="RIFC"><span>Rock Island FC</span></a>
+<div class="footer-links">
+<a href="#matches">Fixtures</a>
+<a href="#results">Results</a>
+<a href="#players">Players</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2026 Rock Island FC. All rights reserved.</p>
+<p>Red &amp; Black · RIFC</p>
+</div>
+</footer>
+
+<script>
+(() => {
+const SUPABASE_URL = 'https://rpraezlikhlzvfxkzrmj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
+
+const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+function initIcons(){
+if(window.lucide){
+lucide.createIcons();
+}
+}
+
+initIcons();
+
+window.addEventListener('scroll', () => {
+document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const observer = new IntersectionObserver(entries => {
+entries.forEach(entry => {
+if(entry.isIntersecting) entry.target.classList.add('visible');
+});
+}, {threshold:0.12});
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+function esc(value){
+return String(value ?? '').replace(/[&<>"']/g, char => ({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+})[char]);
+}
+
+function formatDate(value){
+if(!value) return 'Date TBA';
+const date = new Date(String(value).slice(0,10) + 'T12:00:00');
+if(Number.isNaN(date.getTime())) return 'Date TBA';
+return date.toLocaleDateString('en-US',{
+weekday:'short',
+month:'short',
+day:'numeric',
+year:'numeric'
+});
+}
+
+function formatTime(value){
+if(!value) return 'Time TBA';
+const parts = String(value).split(':');
+const hour = Number(parts[0]);
+if(!Number.isFinite(hour)) return esc(value);
+const minute = (parts[1] || '00').slice(0,2);
+return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+}
+
+function buildCard(match,isPast){
+const isHome = match.side === 'home';
+const opponent = esc(match.opponent || 'Opponent');
+const logo = esc(match.logo || '');
+const location = esc(match.location || 'Location TBA');
+
+const homeTeam = `
+<div class="team-block">
+<img src="/logo.png" alt="RIFC">
+<h3>Rock Island FC</h3>
+<span class="role">${isHome ? 'Home' : 'Away'}</span>
+</div>`;
+
+const awayTeam = `
+<div class="team-block">
+${logo ? `<img src="${logo}" alt="${opponent}" onerror="this.style.opacity=.35">` : `<div class="player-photo-placeholder">?</div>`}
+<h3>${opponent}</h3>
+<span class="role">${isHome ? 'Away' : 'Home'}</span>
+</div>`;
+
+const left = isHome ? homeTeam : awayTeam;
+const right = isHome ? awayTeam : homeTeam;
+
+const us = match.score_us ?? 0;
+const them = match.score_them ?? 0;
+const center = isPast
+? `<div class="match-center"><div class="score">${isHome ? us : them} – ${isHome ? them : us}</div></div>`
+: `<div class="match-center"><div class="vs">VS</div></div>`;
+
+return `
+<article class="match-card fade-up">
+<div class="match-card-top ${isPast ? 'past' : ''}">
+<span class="match-badge ${isPast ? 'final' : ''}">${isPast ? 'Full Time' : (isHome ? 'Home' : 'Away')}</span>
+<span class="match-date-sm">${formatDate(match.date)}</span>
+</div>
+<div class="match-body">
+<div class="match-teams-row">${left}${center}${right}</div>
+<div class="match-footer">
+<div class="match-info-row"><i data-lucide="clock"></i><span><strong>${formatTime(match.time)}</strong></span></div>
+<div class="match-info-row"><i data-lucide="map-pin"></i><span>${location}</span></div>
+</div>
+</div>
+</article>`;
+}
+
+function renderMatches(matches){
+const upcoming = matches
+.filter(match => match.status !== 'past')
+.sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')));
+
+const past = matches
+.filter(match => match.status === 'past')
+.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
+
+document.getElementById('upcomingContainer').innerHTML = upcoming.length
+? upcoming.map(match => buildCard(match,false)).join('')
+: '<div class="empty-state">No upcoming fixtures scheduled</div>';
+
+document.getElementById('pastContainer').innerHTML = past.length
+? past.map(match => buildCard(match,true)).join('')
+: '<div class="empty-state">No recent results yet</div>';
+
+const bar = document.getElementById('nextMatchBar');
+
+if(!upcoming.length){
+bar.style.display = 'none';
+return;
+}
+
+const next = upcoming[0];
+const isHome = next.side === 'home';
+
+bar.style.display = 'flex';
+
+document.getElementById('nextMatchTeams').innerHTML = isHome
+? `<img src="/logo.png" alt="RIFC"><span>RIFC</span><span class="next-match-vs">vs</span><span>${esc(next.opponent || 'Opponent')}</span>`
+: `<span>${esc(next.opponent || 'Opponent')}</span><span class="next-match-vs">vs</span><img src="/logo.png" alt="RIFC"><span>RIFC</span>`;
+
+document.getElementById('nextMatchMeta').innerHTML =
+`<strong>${formatDate(next.date)} · ${formatTime(next.time)}</strong>${esc(next.location || 'Location TBA')}`;
+}
+
+function renderPlayers(players){
+players.sort((a,b) =>
+(parseInt(a.number,10) || 99) - (parseInt(b.number,10) || 99)
+);
+
+document.getElementById('playersContainer').innerHTML = players.length
+? players.map(player => `
+<div class="player-card fade-up">
+${player.photo
+? `<img class="player-photo" src="${esc(player.photo)}" alt="${esc(player.name || 'Player')}">`
+: `<div class="player-photo-placeholder">${esc(player.number || '?')}</div>`}
+<div class="player-number">#${esc(player.number || '–')}</div>
+<div class="player-name">${esc(player.name || 'Player')}</div>
+<div class="player-pos">${esc(player.position || '')}</div>
+</div>
+`).join('')
+: '<div class="empty-state">Squad coming soon</div>';
+}
+
+async function loadWebsite(){
+const upcomingBox = document.getElementById('upcomingContainer');
+const pastBox = document.getElementById('pastContainer');
+const playersBox = document.getElementById('playersContainer');
+
+try{
+if(!db) throw new Error('Supabase library failed to load');
+
+const [matchesResponse,playersResponse] = await Promise.all([
+db.from('matches').select('*').order('date',{ascending:true}),
+db.from('players').select('*').order('created_at',{ascending:true})
+]);
+
+if(matchesResponse.error){
+console.error('Rock Island FC matches error:',matchesResponse.error);
+upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
+pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
+}else{
+renderMatches(matchesResponse.data || []);
+}
+
+if(playersResponse.error){
+console.error('Rock Island FC players error:',playersResponse.error);
+playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
+}else{
+renderPlayers(playersResponse.data || []);
+}
+
+initIcons();
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+}catch(error){
+console.error('Rock Island FC Supabase error:',error);
+upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
+pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
+playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
+}
+}
+
+loadWebsite();
+})();
+</script>
+
+</body>
+</html>
