@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rock Island FC</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root{--red:#E31C23;--red-dark:#A81419;--red-deep:#7A0F13;--black:#0A0A0A;--card:#121212;--elevated:#1A1A1A;--text:#fff;--muted:#999;--border:rgba(255,255,255,.08);--font:'Outfit',sans-serif;--body:'Inter',sans-serif}
-
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:60px}
 body{font-family:var(--body);background:var(--black);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -19,7 +15,6 @@ body{font-family:var(--body);background:var(--black);color:var(--text);line-heig
 .nav-top{background:var(--red);padding:8px 0;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-align:center;color:#fff}
 .nav-main{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:transparent;transition:all .3s}
 .nav.scrolled .nav-main{background:rgba(10,10,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 48px}
-
 .nav-logo,.footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
 .nav-logo img{height:48px;width:auto;object-fit:contain}
 .nav-logo span,.footer-logo span{font-family:var(--font);font-weight:800;font-size:1.15rem;text-transform:uppercase}
@@ -93,24 +88,22 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .lineup-section{padding-top:30px}
 .lineup-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
 .lineup-formation{background:rgba(227,28,35,.15);border:1px solid rgba(227,28,35,.35);color:#ff7777;padding:8px 16px;border-radius:5px;font-family:var(--font);font-weight:800;font-size:.9rem}
-.lineup-pitch{position:relative;overflow:hidden;background:linear-gradient(135deg,#123c27,#0b291b);border:2px solid rgba(255,255,255,.25);border-radius:12px;padding:30px 16px;margin-top:30px;min-height:420px}
+.lineup-pitch{position:relative;overflow:hidden;background:linear-gradient(135deg,#123c27,#0b291b);border:2px solid rgba(255,255,255,.25);border-radius:12px;margin-top:30px;height:600px;padding:0}
 .pitch-lines{position:absolute;inset:12px;border:2px solid rgba(255,255,255,.25);border-radius:5px;pointer-events:none}
 .pitch-lines:before{content:'';position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.25)}
 .pitch-lines:after{content:'';position:absolute;width:110px;height:110px;border:2px solid rgba(255,255,255,.25);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
 .pitch-goal{position:absolute;left:50%;width:38%;height:35px;border:2px solid rgba(255,255,255,.25);transform:translateX(-50%)}
 .pitch-goal.top{top:12px;border-top:0}
 .pitch-goal.bottom{bottom:12px;border-bottom:0}
-.lineup-rows{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-around;gap:25px;min-height:360px}
-.lineup-row{display:flex;justify-content:center;align-items:center;gap:clamp(8px,3vw,30px);flex-wrap:wrap}
-.lineup-player{width:90px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px}
-.lineup-player-photo{width:54px;height:54px;border-radius:50%;border:2px solid #fff;background:#171717;object-fit:cover;box-shadow:0 3px 12px #0008}
-.lineup-player-placeholder{width:54px;height:54px;border-radius:50%;border:2px solid #fff;background:#171717;display:flex;align-items:center;justify-content:center;color:var(--red);font-family:var(--font);font-weight:900;font-size:1.2rem;box-shadow:0 3px 12px #0008}
-.lineup-player-name{font-size:.7rem;font-weight:800;color:#fff;text-shadow:0 2px 5px #000;line-height:1.2;max-width:90px;overflow-wrap:anywhere}
-.lineup-player-position{font-size:.6rem;font-weight:800;color:#fff;background:var(--red);padding:2px 6px;border-radius:3px;text-transform:uppercase}
+.lineup-markers{position:absolute;inset:25px 14px;z-index:2}
+.lineup-player{position:absolute;transform:translate(-50%,-50%);width:80px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.lineup-player-photo,.lineup-player-placeholder{width:48px;height:48px;border-radius:50%;border:2px solid #fff;background:#171717;object-fit:cover;box-shadow:0 3px 12px #0008}
+.lineup-player-placeholder{display:flex;align-items:center;justify-content:center;color:var(--red);font-family:var(--font);font-weight:900;font-size:1.1rem}
+.lineup-player-name{font-size:.68rem;font-weight:800;color:#fff;text-shadow:0 2px 5px #000;line-height:1.2;max-width:80px;overflow-wrap:anywhere}
+.lineup-player-position{font-size:.57rem;font-weight:800;color:#fff;background:var(--red);padding:2px 5px;border-radius:3px;text-transform:uppercase}
 .lineup-status{margin-top:16px;text-align:center;color:var(--muted);font-size:.8rem}
 .lineup-section .empty-state{margin-top:20px}
 
-/* CONTACT PHOTO */
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .contact-photo{padding:0 20px 96px}
 .contact-photo:not(.loaded) .photo-frame{display:none}
@@ -130,7 +123,6 @@ footer{background:#050505;border-top:1px solid var(--border);padding:48px 48px 3
 .footer-links{display:flex;gap:28px}
 .footer-links a{color:var(--muted);font-size:.85rem;letter-spacing:.04em}
 .footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);flex-wrap:wrap;gap:12px}
-
 .fade-up{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 .match-card.visible:hover,.player-card.visible:hover{transform:translateY(-4px)}
@@ -152,20 +144,15 @@ footer{padding:40px 20px 24px}
 .footer-links{justify-content:center}
 .lineup-section{padding-top:30px}
 }
-
 @media(max-width:480px){
 .nav-logo img{height:38px}
 .nav-logo span{font-size:.95rem}
-.lineup-pitch{padding:24px 8px}
-.lineup-player{width:76px}
-.lineup-player-photo,.lineup-player-placeholder{width:46px;height:46px}
-.lineup-player-name{font-size:.63rem;max-width:76px}
+.lineup-pitch{height:540px}
+.lineup-player{width:68px}
+.lineup-player-photo,.lineup-player-placeholder{width:40px;height:40px}
+.lineup-player-name{font-size:.59rem;max-width:68px}
 }
-</style>
-</head>
-
-<body>
-
+</style></head><body>
 <header class="nav" id="nav">
 <div class="nav-top">Rock Island FC · Red &amp; Black</div>
 <div class="nav-main">
@@ -177,9 +164,7 @@ footer{padding:40px 20px 24px}
 <li><a href="#lineup">Starting XI</a></li>
 </ul>
 </div>
-</header>
-
-<section class="hero">
+</header><section class="hero">
 <div class="hero-bg"></div>
 <div class="hero-content">
 <div class="hero-badge"><i data-lucide="shield"></i> Official Club Site</div>
@@ -190,46 +175,29 @@ footer{padding:40px 20px 24px}
 <a href="#players" class="btn btn-outline">Our Squad</a>
 </div>
 </div>
-</section>
-
-<div class="next-match-bar" id="nextMatchBar" style="display:none">
+</section><div class="next-match-bar" id="nextMatchBar" style="display:none">
 <div><div class="next-match-label">Next Match</div></div>
 <div class="next-match-teams" id="nextMatchTeams"></div>
 <div class="next-match-meta" id="nextMatchMeta"></div>
-</div>
-
-<section id="matches">
+</div><section id="matches">
 <div class="section-header fade-up">
 <div class="section-tag">The Schedule</div>
 <h2>Upcoming <span>Fixtures</span></h2>
 </div>
-<div class="matches-grid" id="upcomingContainer">
-<div class="empty-state">Loading fixtures...</div>
-</div>
-</section>
-
-<section id="results">
+<div class="matches-grid" id="upcomingContainer"><div class="empty-state">Loading fixtures...</div></div>
+</section><section id="results">
 <div class="section-header fade-up">
 <div class="section-tag">Recent Form</div>
 <h2>Last <span>Matches</span></h2>
 </div>
-<div class="matches-grid" id="pastContainer">
-<div class="empty-state">Loading results...</div>
-</div>
-</section>
-
-<section id="players">
+<div class="matches-grid" id="pastContainer"><div class="empty-state">Loading results...</div></div>
+</section><section id="players">
 <div class="section-header fade-up">
 <div class="section-tag">The Squad</div>
 <h2>Our <span>Players</span></h2>
 </div>
-<div class="players-grid" id="playersContainer">
-<div class="empty-state">Loading squad...</div>
-</div>
-</section>
-
-<!-- STARTING XI SECTION -->
-<section id="lineup" class="lineup-section">
+<div class="players-grid" id="playersContainer"><div class="empty-state">Loading squad...</div></div>
+</section><section id="lineup" class="lineup-section">
 <div class="section-header fade-up">
 <div class="section-tag">The Team</div>
 <div class="lineup-header">
@@ -237,37 +205,26 @@ footer{padding:40px 20px 24px}
 <div class="lineup-formation" id="lineupFormation">4-3-3</div>
 </div>
 </div>
-<div id="lineupContainer">
-<div class="empty-state">Loading starting lineup...</div>
-</div>
-</section>
-
-<div class="contact-photo fade-up" id="contact">
+<div id="lineupContainer"><div class="empty-state">Loading starting lineup...</div></div>
+</section><div class="contact-photo fade-up" id="contact">
 <div class="photo-frame"><img id="contactPhoto" alt="Rock Island FC"></div>
-</div>
-
-<script>
+</div><script>
 (() => {
-const wrap = document.getElementById('contact');
-const img = document.getElementById('contactPhoto');
-const files = ['photo.png','photo.jpg','photo.jpeg'];
-let i = 0;
-
-img.onload = () => {
-wrap.querySelector('.photo-frame').style.setProperty('--r', img.naturalWidth / (img.naturalHeight || 1));
+const wrap=document.getElementById('contact');
+const img=document.getElementById('contactPhoto');
+const files=['photo.png','photo.jpg','photo.jpeg'];
+let i=0;
+img.onload=()=>{
+wrap.querySelector('.photo-frame').style.setProperty('--r',img.naturalWidth/(img.naturalHeight||1));
 wrap.classList.add('loaded');
 };
-
-img.onerror = () => {
-if(++i < files.length) img.src = files[i];
-else wrap.style.display = 'none';
+img.onerror=()=>{
+if(++i<files.length)img.src=files[i];
+else wrap.style.display='none';
 };
-
-img.src = files[0];
+img.src=files[0];
 })();
-</script>
-
-<footer>
+</script><footer>
 <div class="footer-inner">
 <a href="/" class="footer-logo"><img src="/logo.png" alt="RIFC"><span>Rock Island FC</span></a>
 <div class="footer-links">
@@ -281,98 +238,82 @@ img.src = files[0];
 <p>© 2026 Rock Island FC. All rights reserved.</p>
 <p>Red &amp; Black · RIFC</p>
 </div>
-</footer>
-
-<script>
+</footer><script>
 (() => {
-const SUPABASE_URL = 'https://rpraezlikhlzvfxkzrmj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
+const SUPABASE_URL='https://rpraezlikhlzvfxkzrmj.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 
-const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-function initIcons(){
-if(window.lucide) lucide.createIcons();
-}
-
+function initIcons(){if(window.lucide)lucide.createIcons()}
 initIcons();
 
-window.addEventListener('scroll', () => {
-document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+window.addEventListener('scroll',()=>{
+document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
 });
 
-const observer = new IntersectionObserver(entries => {
-entries.forEach(entry => {
-if(entry.isIntersecting) entry.target.classList.add('visible');
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting)entry.target.classList.add('visible');
 });
-}, {threshold:0.12});
+},{threshold:.12});
 
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 
 function esc(value){
-return String(value ?? '').replace(/[&<>"']/g, char => ({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
+return String(value??'').replace(/[&<>"']/g,char=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
 })[char]);
 }
 
 function formatDate(value){
-if(!value) return 'Date TBA';
-const date = new Date(String(value).slice(0,10) + 'T12:00:00');
-if(Number.isNaN(date.getTime())) return 'Date TBA';
-return date.toLocaleDateString('en-US',{
-weekday:'short',
-month:'short',
-day:'numeric',
-year:'numeric'
-});
+if(!value)return 'Date TBA';
+const date=new Date(String(value).slice(0,10)+'T12:00:00');
+if(Number.isNaN(date.getTime()))return 'Date TBA';
+return date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
 }
 
 function formatTime(value){
-if(!value) return 'Time TBA';
-const parts = String(value).split(':');
-const hour = Number(parts[0]);
-if(!Number.isFinite(hour)) return esc(value);
-const minute = (parts[1] || '00').slice(0,2);
-return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+if(!value)return 'Time TBA';
+const parts=String(value).split(':');
+const hour=Number(parts[0]);
+if(!Number.isFinite(hour))return esc(value);
+const minute=(parts[1]||'00').slice(0,2);
+return `${hour%12||12}:${minute} ${hour>=12?'PM':'AM'}`;
 }
 
 function buildCard(match,isPast){
-const isHome = match.side === 'home';
-const opponent = esc(match.opponent || 'Opponent');
-const logo = esc(match.logo || '');
-const location = esc(match.location || 'Location TBA');
+const isHome=match.side==='home';
+const opponent=esc(match.opponent||'Opponent');
+const logo=esc(match.logo||'');
+const location=esc(match.location||'Location TBA');
 
-const homeTeam = `
+const homeTeam=`
 <div class="team-block">
 <img src="/logo.png" alt="RIFC">
 <h3>Rock Island FC</h3>
-<span class="role">${isHome ? 'Home' : 'Away'}</span>
+<span class="role">${isHome?'Home':'Away'}</span>
 </div>`;
 
-const awayTeam = `
+const awayTeam=`
 <div class="team-block">
-${logo ? `<img src="${logo}" alt="${opponent}" onerror="this.style.opacity=.35">` : `<div class="player-photo-placeholder">?</div>`}
+${logo?`<img src="${logo}" alt="${opponent}" onerror="this.style.opacity=.35">`:`<div class="player-photo-placeholder">?</div>`}
 <h3>${opponent}</h3>
-<span class="role">${isHome ? 'Away' : 'Home'}</span>
+<span class="role">${isHome?'Away':'Home'}</span>
 </div>`;
 
-const left = isHome ? homeTeam : awayTeam;
-const right = isHome ? awayTeam : homeTeam;
+const left=isHome?homeTeam:awayTeam;
+const right=isHome?awayTeam:homeTeam;
+const us=match.score_us??0;
+const them=match.score_them??0;
 
-const us = match.score_us ?? 0;
-const them = match.score_them ?? 0;
-
-const center = isPast
-? `<div class="match-center"><div class="score">${isHome ? us : them} – ${isHome ? them : us}</div></div>`
-: `<div class="match-center"><div class="vs">VS</div></div>`;
+const center=isPast
+?`<div class="match-center"><div class="score">${isHome?us:them} – ${isHome?them:us}</div></div>`
+:`<div class="match-center"><div class="vs">VS</div></div>`;
 
 return `
 <article class="match-card fade-up">
-<div class="match-card-top ${isPast ? 'past' : ''}">
-<span class="match-badge ${isPast ? 'final' : ''}">${isPast ? 'Full Time' : (isHome ? 'Home' : 'Away')}</span>
+<div class="match-card-top ${isPast?'past':''}">
+<span class="match-badge ${isPast?'final':''}">${isPast?'Full Time':(isHome?'Home':'Away')}</span>
 <span class="match-date-sm">${formatDate(match.date)}</span>
 </div>
 <div class="match-body">
@@ -386,172 +327,132 @@ return `
 }
 
 function renderMatches(matches){
-const upcoming = matches
-.filter(match => match.status !== 'past')
-.sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')));
+const upcoming=matches.filter(match=>match.status!=='past').sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+const past=matches.filter(match=>match.status==='past').sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
 
-const past = matches
-.filter(match => match.status === 'past')
-.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
+document.getElementById('upcomingContainer').innerHTML=upcoming.length?upcoming.map(match=>buildCard(match,false)).join(''):'<div class="empty-state">No upcoming fixtures scheduled</div>';
+document.getElementById('pastContainer').innerHTML=past.length?past.map(match=>buildCard(match,true)).join(''):'<div class="empty-state">No recent results yet</div>';
 
-document.getElementById('upcomingContainer').innerHTML = upcoming.length
-? upcoming.map(match => buildCard(match,false)).join('')
-: '<div class="empty-state">No upcoming fixtures scheduled</div>';
+const bar=document.getElementById('nextMatchBar');
+if(!upcoming.length){bar.style.display='none';return}
 
-document.getElementById('pastContainer').innerHTML = past.length
-? past.map(match => buildCard(match,true)).join('')
-: '<div class="empty-state">No recent results yet</div>';
+const next=upcoming[0];
+const isHome=next.side==='home';
+bar.style.display='flex';
 
-const bar = document.getElementById('nextMatchBar');
+document.getElementById('nextMatchTeams').innerHTML=isHome
+?`<img src="/logo.png" alt="RIFC"><span>RIFC</span><span class="next-match-vs">vs</span><span>${esc(next.opponent||'Opponent')}</span>`
+:`<span>${esc(next.opponent||'Opponent')}</span><span class="next-match-vs">vs</span><img src="/logo.png" alt="RIFC"><span>RIFC</span>`;
 
-if(!upcoming.length){
-bar.style.display = 'none';
-return;
-}
-
-const next = upcoming[0];
-const isHome = next.side === 'home';
-
-bar.style.display = 'flex';
-
-document.getElementById('nextMatchTeams').innerHTML = isHome
-? `<img src="/logo.png" alt="RIFC"><span>RIFC</span><span class="next-match-vs">vs</span><span>${esc(next.opponent || 'Opponent')}</span>`
-: `<span>${esc(next.opponent || 'Opponent')}</span><span class="next-match-vs">vs</span><img src="/logo.png" alt="RIFC"><span>RIFC</span>`;
-
-document.getElementById('nextMatchMeta').innerHTML =
-`<strong>${formatDate(next.date)} · ${formatTime(next.time)}</strong>${esc(next.location || 'Location TBA')}`;
+document.getElementById('nextMatchMeta').innerHTML=`<strong>${formatDate(next.date)} · ${formatTime(next.time)}</strong>${esc(next.location||'Location TBA')}`;
 }
 
 function renderPlayers(players){
-players.sort((a,b) =>
-(parseInt(a.number,10) || 99) - (parseInt(b.number,10) || 99)
-);
-
-document.getElementById('playersContainer').innerHTML = players.length
-? players.map(player => `
+players.sort((a,b)=>(parseInt(a.number,10)||99)-(parseInt(b.number,10)||99));
+document.getElementById('playersContainer').innerHTML=players.length
+?players.map(player=>`
 <div class="player-card fade-up">
-${player.photo
-? `<img class="player-photo" src="${esc(player.photo)}" alt="${esc(player.name || 'Player')}">`
-: `<div class="player-photo-placeholder">${esc(player.number || '?')}</div>`}
-<div class="player-number">#${esc(player.number || '–')}</div>
-<div class="player-name">${esc(player.name || 'Player')}</div>
-<div class="player-pos">${esc(player.position || '')}</div>
-</div>
-`).join('')
-: '<div class="empty-state">Squad coming soon</div>';
+${player.photo?`<img class="player-photo" src="${esc(player.photo)}" alt="${esc(player.name||'Player')}">`:`<div class="player-photo-placeholder">${esc(player.number||'?')}</div>`}
+<div class="player-number">#${esc(player.number||'–')}</div>
+<div class="player-name">${esc(player.name||'Player')}</div>
+<div class="player-pos">${esc(player.position||'')}</div>
+</div>`).join('')
+:'<div class="empty-state">Squad coming soon</div>';
 }
 
-/* STARTING XI FUNCTIONS */
+/* STARTING XI */
 
 function getPlayerId(entry){
-if(typeof entry === 'string') return entry;
-return entry?.player_id || entry?.playerId || entry?.id || '';
+if(typeof entry==='string')return entry;
+return entry?.player_id||entry?.playerId||entry?.id||'';
 }
 
-function getPositionGroup(position){
-const p = String(position || '').toLowerCase();
-
-if(/goalkeeper|keeper|\bgk\b/.test(p)) return 'goalkeeper';
-if(/defen|back|\b(cb|lb|rb|lwb|rwb)\b/.test(p)) return 'defenders';
-if(/forward|strik|wing|\b(st|cf|lw|rw|fw)\b/.test(p)) return 'forwards';
-if(/mid|\b(cm|cdm|cam|lm|rm|dm|am)\b/.test(p)) return 'midfielders';
-
-return 'midfielders';
+function defaultPositions(formation){
+const layouts={
+'4-3-3':[[50,88],[15,70],[38,70],[62,70],[85,70],[25,48],[50,48],[75,48],[20,20],[50,20],[80,20]],
+'4-4-2':[[50,88],[15,70],[38,70],[62,70],[85,70],[15,47],[38,47],[62,47],[85,47],[35,20],[65,20]],
+'4-2-3-1':[[50,88],[15,70],[38,70],[62,70],[85,70],[38,52],[62,52],[20,32],[50,32],[80,32],[50,15]],
+'3-5-2':[[50,88],[25,70],[50,70],[75,70],[12,48],[32,48],[50,48],[68,48],[88,48],[35,20],[65,20]],
+'3-4-3':[[50,88],[25,70],[50,70],[75,70],[18,47],[40,47],[60,47],[82,47],[20,20],[50,20],[80,20]],
+'5-3-2':[[50,88],[10,70],[30,70],[50,70],[70,70],[90,70],[25,45],[50,45],[75,45],[35,20],[65,20]],
+'4-1-4-1':[[50,88],[15,70],[38,70],[62,70],[85,70],[50,55],[15,35],[38,35],[62,35],[85,35],[50,15]]
+};
+return layouts[formation]||layouts['4-3-3'];
 }
 
 function renderLineup(lineup,players){
-const container = document.getElementById('lineupContainer');
-const title = document.getElementById('lineupTitle');
-const formation = document.getElementById('lineupFormation');
+const container=document.getElementById('lineupContainer');
+const title=document.getElementById('lineupTitle');
+const formation=document.getElementById('lineupFormation');
 
-if(!lineup || !Array.isArray(lineup.players) || !lineup.players.length){
-container.innerHTML = '<div class="empty-state">Starting lineup has not been announced yet</div>';
+if(!lineup||!Array.isArray(lineup.players)||!lineup.players.length){
+container.innerHTML='<div class="empty-state">Starting lineup has not been announced yet</div>';
 return;
 }
 
-const playerMap = new Map(players.map(player => [String(player.id),player]));
+const playerMap=new Map(players.map(player=>[String(player.id),player]));
+const formationName=lineup.formation||'4-3-3';
+const defaults=defaultPositions(formationName);
 
-const selected = lineup.players
-.map(entry => {
-const id = getPlayerId(entry);
-const player = playerMap.get(String(id));
+const selected=lineup.players.map((entry,index)=>{
+const id=getPlayerId(entry);
+const player=playerMap.get(String(id));
+if(!player)return null;
 
-if(!player) return null;
+const savedX=Number(entry?.x);
+const savedY=Number(entry?.y);
 
-return {
+return{
 player,
-position: typeof entry === 'object'
-? (entry.position || entry.slot || player.position || '')
-: (player.position || '')
+position:typeof entry==='object'?(entry.position||entry.slot||player.position||''):(player.position||''),
+x:Number.isFinite(savedX)&&entry?.x!==undefined?Math.max(0,Math.min(100,savedX)):(defaults[index]?.[0]??50),
+y:Number.isFinite(savedY)&&entry?.y!==undefined?Math.max(0,Math.min(100,savedY)):(defaults[index]?.[1]??50)
 };
-})
-.filter(Boolean);
+}).filter(Boolean);
 
 if(!selected.length){
-container.innerHTML = '<div class="empty-state">The lineup could not be loaded. Check the selected players in admin.</div>';
+container.innerHTML='<div class="empty-state">The lineup could not be loaded. Check the selected players in admin.</div>';
 return;
 }
 
-title.innerHTML = `${esc(lineup.title || 'Starting XI')}`;
-formation.textContent = lineup.formation || '4-3-3';
-
-const groups = {
-forwards:[],
-midfielders:[],
-defenders:[],
-goalkeeper:[]
-};
-
-selected.forEach(item => {
-const group = getPositionGroup(item.position);
-groups[group].push(item);
-});
+title.innerHTML=esc(lineup.title||'Starting XI');
+formation.textContent=formationName;
 
 function playerHTML(item){
-const player = item.player;
-const photo = player.photo
-? `<img class="lineup-player-photo" src="${esc(player.photo)}" alt="${esc(player.name || 'Player')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-: '';
+const player=item.player;
+const photo=player.photo
+?`<img class="lineup-player-photo" src="${esc(player.photo)}" alt="${esc(player.name||'Player')}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+:'';
 
-return `
-<div class="lineup-player">
+return`
+<div class="lineup-player" style="left:${item.x}%;top:${item.y}%">
 ${photo}
-<div class="lineup-player-placeholder" ${photo ? 'style="display:none"' : ''}>${esc(player.number || '?')}</div>
-<div class="lineup-player-name">${esc(player.name || 'Player')}</div>
-<div class="lineup-player-position">${esc(item.position || 'Player')}</div>
+<div class="lineup-player-placeholder" ${photo?'style="display:none"':''}>${esc(player.number||'?')}</div>
+<div class="lineup-player-name">${esc(player.name||'Player')}</div>
+<div class="lineup-player-position">${esc(item.position||'Player')}</div>
 </div>`;
 }
 
-const row = group => groups[group].length
-? `<div class="lineup-row">${groups[group].map(playerHTML).join('')}</div>`
-: '';
-
-container.innerHTML = `
+container.innerHTML=`
 <div class="lineup-pitch">
 <div class="pitch-lines"></div>
 <div class="pitch-goal top"></div>
 <div class="pitch-goal bottom"></div>
-<div class="lineup-rows">
-${row('forwards')}
-${row('midfielders')}
-${row('defenders')}
-${row('goalkeeper')}
+<div class="lineup-markers">${selected.map(playerHTML).join('')}</div>
 </div>
-</div>
-<div class="lineup-status">${selected.length} of 11 players shown</div>
-`;
+<div class="lineup-status">${selected.length} of 11 players shown</div>`;
 }
 
 async function loadWebsite(){
-const upcomingBox = document.getElementById('upcomingContainer');
-const pastBox = document.getElementById('pastContainer');
-const playersBox = document.getElementById('playersContainer');
-const lineupBox = document.getElementById('lineupContainer');
+const upcomingBox=document.getElementById('upcomingContainer');
+const pastBox=document.getElementById('pastContainer');
+const playersBox=document.getElementById('playersContainer');
+const lineupBox=document.getElementById('lineupContainer');
 
 try{
-if(!db) throw new Error('Supabase library failed to load');
+if(!db)throw new Error('Supabase library failed to load');
 
-const [matchesResponse,playersResponse,lineupResponse] = await Promise.all([
+const[matchesResponse,playersResponse,lineupResponse]=await Promise.all([
 db.from('matches').select('*').order('date',{ascending:true}),
 db.from('players').select('*').order('created_at',{ascending:true}),
 db.from('lineups').select('*').eq('id','current').maybeSingle()
@@ -559,45 +460,37 @@ db.from('lineups').select('*').eq('id','current').maybeSingle()
 
 if(matchesResponse.error){
 console.error('Rock Island FC matches error:',matchesResponse.error);
-upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
-pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
-}else{
-renderMatches(matchesResponse.data || []);
-}
+upcomingBox.innerHTML='<div class="empty-state">Could not load fixtures. Please try again later.</div>';
+pastBox.innerHTML='<div class="empty-state">Could not load results. Please try again later.</div>';
+}else renderMatches(matchesResponse.data||[]);
 
-let players = [];
-
+let players=[];
 if(playersResponse.error){
 console.error('Rock Island FC players error:',playersResponse.error);
-playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
+playersBox.innerHTML='<div class="empty-state">Could not load players. Please try again later.</div>';
 }else{
-players = playersResponse.data || [];
+players=playersResponse.data||[];
 renderPlayers(players);
 }
 
 if(lineupResponse.error){
 console.error('Rock Island FC lineup error:',lineupResponse.error);
-lineupBox.innerHTML = '<div class="empty-state">Could not load the starting lineup.</div>';
-}else{
-renderLineup(lineupResponse.data,players);
-}
+lineupBox.innerHTML='<div class="empty-state">Could not load the starting lineup.</div>';
+}else renderLineup(lineupResponse.data,players);
 
 initIcons();
-
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 
 }catch(error){
 console.error('Rock Island FC Supabase error:',error);
-upcomingBox.innerHTML = '<div class="empty-state">Could not load fixtures. Please try again later.</div>';
-pastBox.innerHTML = '<div class="empty-state">Could not load results. Please try again later.</div>';
-playersBox.innerHTML = '<div class="empty-state">Could not load players. Please try again later.</div>';
-lineupBox.innerHTML = '<div class="empty-state">Could not load the starting lineup.</div>';
+upcomingBox.innerHTML='<div class="empty-state">Could not load fixtures. Please try again later.</div>';
+pastBox.innerHTML='<div class="empty-state">Could not load results. Please try again later.</div>';
+playersBox.innerHTML='<div class="empty-state">Could not load players. Please try again later.</div>';
+lineupBox.innerHTML='<div class="empty-state">Could not load the starting lineup.</div>';
 }
 }
 
 loadWebsite();
 })();
-</script>
-
-</body>
+</script></body>
 </html>
