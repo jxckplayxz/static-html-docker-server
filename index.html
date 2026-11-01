@@ -1,11 +1,14 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rock Island FC</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
 :root{--red:#E31C23;--red-dark:#A81419;--red-deep:#7A0F13;--black:#0A0A0A;--card:#121212;--elevated:#1A1A1A;--text:#fff;--muted:#999;--border:rgba(255,255,255,.08);--font:'Outfit',sans-serif;--body:'Inter',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:60px}
@@ -104,6 +107,20 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .lineup-status{margin-top:16px;text-align:center;color:var(--muted);font-size:.8rem}
 .lineup-section .empty-state{margin-top:20px}
 
+/* HIGHLIGHTS */
+.highlights-section{max-width:1280px}
+.highlights-feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.highlight-slide{position:relative;background:#111;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:340px;aspect-ratio:9/14}
+.highlight-slide img,.highlight-slide video{width:100%;height:100%;min-height:340px;object-fit:cover;display:block;background:#080808}
+.highlight-slide video{position:absolute;inset:0}
+.highlight-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85) 100%);pointer-events:none}
+.highlight-caption{position:absolute;bottom:0;left:0;right:0;padding:24px 18px 18px;z-index:2}
+.highlight-caption p{font-size:.95rem;font-weight:600;line-height:1.45;color:#fff;overflow-wrap:anywhere}
+.highlight-date{font-size:.7rem;color:rgba(255,255,255,.65);margin-top:8px}
+.highlight-empty{grid-column:1/-1;text-align:center;padding:55px 20px;background:var(--card);border:1px dashed var(--border);border-radius:10px;color:var(--muted)}
+.highlight-type{position:absolute;top:12px;left:12px;z-index:3;background:rgba(0,0,0,.65);padding:6px 9px;border-radius:5px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.highlight-slide video::-webkit-media-controls{z-index:5}
+
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .contact-photo{padding:0 20px 96px}
 .contact-photo:not(.loaded) .photo-frame{display:none}
@@ -151,8 +168,13 @@ footer{padding:40px 20px 24px}
 .lineup-player{width:68px}
 .lineup-player-photo,.lineup-player-placeholder{width:40px;height:40px}
 .lineup-player-name{font-size:.59rem;max-width:68px}
+.highlights-feed{grid-template-columns:1fr}
+.highlight-slide{max-width:420px;width:100%;margin:0 auto}
 }
-</style></head><body>
+</style>
+</head>
+
+<body>
 <header class="nav" id="nav">
 <div class="nav-top">Rock Island FC · Red &amp; Black</div>
 <div class="nav-main">
@@ -162,9 +184,12 @@ footer{padding:40px 20px 24px}
 <li><a href="#results">Results</a></li>
 <li><a href="#players">Players</a></li>
 <li><a href="#lineup">Starting XI</a></li>
+<li><a href="#highlights">Highlights</a></li>
 </ul>
 </div>
-</header><section class="hero">
+</header>
+
+<section class="hero">
 <div class="hero-bg"></div>
 <div class="hero-content">
 <div class="hero-badge"><i data-lucide="shield"></i> Official Club Site</div>
@@ -175,29 +200,39 @@ footer{padding:40px 20px 24px}
 <a href="#players" class="btn btn-outline">Our Squad</a>
 </div>
 </div>
-</section><div class="next-match-bar" id="nextMatchBar" style="display:none">
+</section>
+
+<div class="next-match-bar" id="nextMatchBar" style="display:none">
 <div><div class="next-match-label">Next Match</div></div>
 <div class="next-match-teams" id="nextMatchTeams"></div>
 <div class="next-match-meta" id="nextMatchMeta"></div>
-</div><section id="matches">
+</div>
+
+<section id="matches">
 <div class="section-header fade-up">
 <div class="section-tag">The Schedule</div>
 <h2>Upcoming <span>Fixtures</span></h2>
 </div>
 <div class="matches-grid" id="upcomingContainer"><div class="empty-state">Loading fixtures...</div></div>
-</section><section id="results">
+</section>
+
+<section id="results">
 <div class="section-header fade-up">
 <div class="section-tag">Recent Form</div>
 <h2>Last <span>Matches</span></h2>
 </div>
 <div class="matches-grid" id="pastContainer"><div class="empty-state">Loading results...</div></div>
-</section><section id="players">
+</section>
+
+<section id="players">
 <div class="section-header fade-up">
 <div class="section-tag">The Squad</div>
 <h2>Our <span>Players</span></h2>
 </div>
 <div class="players-grid" id="playersContainer"><div class="empty-state">Loading squad...</div></div>
-</section><section id="lineup" class="lineup-section">
+</section>
+
+<section id="lineup" class="lineup-section">
 <div class="section-header fade-up">
 <div class="section-tag">The Team</div>
 <div class="lineup-header">
@@ -206,9 +241,23 @@ footer{padding:40px 20px 24px}
 </div>
 </div>
 <div id="lineupContainer"><div class="empty-state">Loading starting lineup...</div></div>
-</section><div class="contact-photo fade-up" id="contact">
+</section>
+
+<section id="highlights" class="highlights-section">
+<div class="section-header fade-up">
+<div class="section-tag">From the Club</div>
+<h2>Latest <span>Highlights</span></h2>
+</div>
+<div class="highlights-feed" id="highlightsContainer">
+<div class="highlight-empty">Loading highlights...</div>
+</div>
+</section>
+
+<div class="contact-photo fade-up" id="contact">
 <div class="photo-frame"><img id="contactPhoto" alt="Rock Island FC"></div>
-</div><script>
+</div>
+
+<script>
 (() => {
 const wrap=document.getElementById('contact');
 const img=document.getElementById('contactPhoto');
@@ -224,7 +273,9 @@ else wrap.style.display='none';
 };
 img.src=files[0];
 })();
-</script><footer>
+</script>
+
+<footer>
 <div class="footer-inner">
 <a href="/" class="footer-logo"><img src="/logo.png" alt="RIFC"><span>Rock Island FC</span></a>
 <div class="footer-links">
@@ -232,16 +283,19 @@ img.src=files[0];
 <a href="#results">Results</a>
 <a href="#players">Players</a>
 <a href="#lineup">Starting XI</a>
+<a href="#highlights">Highlights</a>
 </div>
 </div>
 <div class="footer-bottom">
 <p>© 2026 Rock Island FC. All rights reserved.</p>
 <p>Red &amp; Black · RIFC</p>
 </div>
-</footer><script>
+</footer>
+
+<script>
 (() => {
 const SUPABASE_URL='https://rpraezlikhlzvfxkzrmj.supabase.co';
-const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmF6bGlraGx6dmZ4a3pybWoiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc5MzQwNTIzNiwiZXhwIjoyMTA4OTgxMjM2fQ.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc';
 const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 
 function initIcons(){if(window.lucide)lucide.createIcons()}
@@ -443,6 +497,72 @@ container.innerHTML=`
 <div class="lineup-status">${selected.length} of 11 players shown</div>`;
 }
 
+/* HIGHLIGHTS */
+
+function formatHighlightDate(value){
+if(!value)return '';
+const date=new Date(value);
+if(Number.isNaN(date.getTime()))return '';
+return date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+async function loadHighlights(){
+const container=document.getElementById('highlightsContainer');
+
+try{
+if(!db)throw new Error('Supabase is not available');
+
+const{data,error}=await db
+.from('highlights')
+.select('id,media_url,media_type,caption,created_at')
+.order('created_at',{ascending:false});
+
+if(error)throw error;
+
+if(!data||!data.length){
+container.innerHTML='<div class="highlight-empty">No highlights yet. Check back soon.</div>';
+return;
+}
+
+container.innerHTML=data.map(item=>{
+const isVideo=item.media_type==='video';
+const media=isVideo
+?`<video src="${esc(item.media_url)}" controls muted playsinline preload="metadata"></video>`
+:`<img src="${esc(item.media_url)}" alt="${esc(item.caption||'Rock Island FC highlight')}" loading="lazy">`;
+
+return`
+<article class="highlight-slide">
+<span class="highlight-type">${isVideo?'Video':'Photo'}</span>
+${media}
+<div class="highlight-overlay"></div>
+<div class="highlight-caption">
+<p>${esc(item.caption||'')}</p>
+<div class="highlight-date">${formatHighlightDate(item.created_at)}</div>
+</div>
+</article>`;
+}).join('');
+
+const videos=container.querySelectorAll('video');
+
+const videoObserver=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+const video=entry.target;
+if(entry.isIntersecting){
+video.play().catch(()=>{});
+}else{
+video.pause();
+}
+});
+},{threshold:.5});
+
+videos.forEach(video=>videoObserver.observe(video));
+
+}catch(error){
+console.error('Rock Island FC highlights error:',error);
+container.innerHTML='<div class="highlight-empty">Could not load highlights right now.</div>';
+}
+}
+
 async function loadWebsite(){
 const upcomingBox=document.getElementById('upcomingContainer');
 const pastBox=document.getElementById('pastContainer');
@@ -478,6 +598,8 @@ console.error('Rock Island FC lineup error:',lineupResponse.error);
 lineupBox.innerHTML='<div class="empty-state">Could not load the starting lineup.</div>';
 }else renderLineup(lineupResponse.data,players);
 
+await loadHighlights();
+
 initIcons();
 document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
 
@@ -492,5 +614,6 @@ lineupBox.innerHTML='<div class="empty-state">Could not load the starting lineup
 
 loadWebsite();
 })();
-</script></body>
+</script>
+</body>
 </html>
