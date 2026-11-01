@@ -1,6 +1,4 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -44,13 +42,21 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 .slot{background:#101010;border:1px solid #303030;padding:12px;border-radius:8px;margin-bottom:10px}
 .slot label{color:#fff}
 .slot small{color:#999}
-@media(max-width:650px){body{padding:13px}.form-grid,.lineup-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+.pitch-instructions{text-align:center;color:#aaa;font-size:13px;margin:10px 0}
+.pitch{position:relative;width:100%;max-width:650px;aspect-ratio:68/100;margin:20px auto;overflow:hidden;border:3px solid white;border-radius:10px;background:repeating-linear-gradient(0deg,#17652d 0px,#17652d 55px,#1b7435 55px,#1b7435 110px);touch-action:pan-y}
+.pitch-line{position:absolute;left:0;right:0;top:50%;border-top:2px solid white}
+.pitch-circle{position:absolute;width:35%;aspect-ratio:1;border:2px solid white;border-radius:50%;left:32.5%;top:50%;transform:translateY(-50%)}
+.pitch-box{position:absolute;width:65%;height:15%;left:17.5%;border:2px solid white}
+.pitch-box.top{top:0}
+.pitch-box.bottom{bottom:0}
+.pitch-player{position:absolute;transform:translate(-50%,-50%);width:65px;text-align:center;z-index:5;cursor:grab;user-select:none;touch-action:none}
+.pitch-shirt{width:36px;height:36px;margin:auto;background:#e31c23;border:2px solid white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 8px #000}
+.pitch-name{font-size:11px;font-weight:800;color:white;text-shadow:1px 1px 3px black;margin-top:3px;white-space:nowrap}
+@media(max-width:650px){body{padding:13px}.form-grid,.lineup-grid{grid-template-columns:1fr}.full{grid-column:auto}.form-card{padding:15px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-<div class="login-wrap" id="loginScreen">
+<div class="wrap"><div class="login-wrap" id="loginScreen">
 <img src="/logo.png" alt="RIFC">
 <h1>Admin Login</h1>
 <p>Rock Island FC · Match &amp; Squad Manager</p>
@@ -60,9 +66,7 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 <button class="btn" type="submit">Sign In</button>
 </form>
 <p class="error" id="loginError"></p>
-</div>
-
-<div class="dashboard" id="dashboard">
+</div><div class="dashboard" id="dashboard">
 <div class="dash-header">
 <h1>Rock Island FC Admin</h1>
 <div class="actions">
@@ -70,15 +74,11 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 <button class="btn secondary" id="logoutBtn">Logout</button>
 </div>
 </div>
-<div class="status" id="status"></div>
-
-<div class="tabs">
+<div class="status" id="status"></div><div class="tabs">
 <button class="tab active" data-panel="matches">Matches</button>
 <button class="tab" data-panel="players">Players</button>
 <button class="tab" data-panel="lineup">Starting XI</button>
-</div>
-
-<div class="panel active" id="panel-matches">
+</div><div class="panel active" id="panel-matches">
 <div class="form-card">
 <h2 id="matchTitle">Add Match</h2>
 <form id="matchForm">
@@ -101,9 +101,7 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </div>
 <div class="section-label">Upcoming fixtures</div><div class="list" id="upcomingList"></div>
 <div class="section-label">Past results</div><div class="list" id="pastList"></div>
-</div>
-
-<div class="panel" id="panel-players">
+</div><div class="panel" id="panel-players">
 <div class="form-card">
 <h2 id="playerTitle">Add Player</h2>
 <form id="playerForm">
@@ -123,9 +121,7 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </form>
 </div>
 <div class="section-label">Squad</div><div class="list" id="playersList"></div>
-</div>
-
-<div class="panel" id="panel-lineup">
+</div><div class="panel" id="panel-lineup">
 <div class="form-card">
 <h2>Starting XI Manager</h2>
 <p class="hint">Choose your formation and select 11 players from your squad</p>
@@ -143,25 +139,30 @@ label{display:block;font-size:13px;color:#ccc;font-weight:700}
 </select>
 <div class="section-label">Select your 11 players</div>
 <div id="lineupSlots" class="lineup-grid"></div>
+<div class="section-label">Arrange players on the pitch</div>
+<p class="pitch-instructions">Drag any player to move them wherever you want</p>
+<div class="pitch" id="lineupPitch">
+<div class="pitch-box top"></div>
+<div class="pitch-box bottom"></div>
+<div class="pitch-line"></div>
+<div class="pitch-circle"></div>
+<div id="pitchPlayers"></div>
+</div>
 <div class="actions">
 <button class="btn" id="saveLineup" type="button">Save Starting XI</button>
 <button class="btn secondary" id="clearLineup" type="button">Clear selections</button>
+<button class="btn secondary" id="resetPositions" type="button">Reset positions</button>
 </div>
 <p class="hint" id="lineupHint">Your saved lineup will appear on the public website</p>
 </div>
-</div>
-
-</div>
-</div>
-
-<script>
+</div></div>
+</div><script>
 const SUPABASE_URL="https://rpraezlikhlzvfxkzrmj.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InJwcmFlemxpa2hsenZmeGt6cm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDUyMzYsImV4cCI6MjEwODk4MTIzNn0.ibKjZ5PJtmHx4VGh-eiPg_kmdUvBijz1ckrhR1UAfhc";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
 let matches=[],players=[],editingMatch=null,editingPlayer=null,pendingLogo=null,pendingPhoto=null;
 let lineupData=[];
-
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function say(msg){$('status').textContent=msg;}
@@ -190,10 +191,7 @@ async function showDashboard(){
 $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();
  $('loginError').style.display='none';
- const {error}=await db.auth.signInWithPassword({
-  email:$('email').value.trim(),
-  password:$('password').value
- });
+ const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
  if(error){
   $('loginError').textContent=error.message;
   $('loginError').style.display='block';
@@ -388,67 +386,146 @@ window.deletePlayer=async id=>{
  else{await loadPlayers();say('Player removed');}
 };
 
-/* STARTING XI */
+/* STARTING XI AND DRAGGABLE PITCH */
 
-const positions=[
- 'Goalkeeper',
- 'Left Back','Centre Back','Centre Back','Right Back',
- 'Defensive Midfielder','Central Midfielder','Central Midfielder',
- 'Left Winger','Striker','Right Winger'
-];
+const formations={
+ '4-3-3':[[50,88],[15,70],[38,70],[62,70],[85,70],[25,48],[50,48],[75,48],[20,20],[50,20],[80,20]],
+ '4-4-2':[[50,88],[15,70],[38,70],[62,70],[85,70],[15,47],[38,47],[62,47],[85,47],[35,20],[65,20]],
+ '4-2-3-1':[[50,88],[15,70],[38,70],[62,70],[85,70],[38,52],[62,52],[20,32],[50,32],[80,32],[50,15]],
+ '3-5-2':[[50,88],[25,70],[50,70],[75,70],[12,48],[32,48],[50,48],[68,48],[88,48],[35,20],[65,20]],
+ '3-4-3':[[50,88],[25,70],[50,70],[75,70],[18,47],[40,47],[60,47],[82,47],[20,20],[50,20],[80,20]],
+ '5-3-2':[[50,88],[10,70],[30,70],[50,70],[70,70],[90,70],[25,45],[50,45],[75,45],[35,20],[65,20]],
+ '4-1-4-1':[[50,88],[15,70],[38,70],[62,70],[85,70],[50,55],[15,35],[38,35],[62,35],[85,35],[50,15]]
+};
+
+const labels={
+ '4-3-3':['Goalkeeper','Left Back','Centre Back','Centre Back','Right Back','Central Midfielder','Central Midfielder','Central Midfielder','Left Winger','Striker','Right Winger'],
+ '4-4-2':['Goalkeeper','Left Back','Centre Back','Centre Back','Right Back','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Striker','Striker'],
+ '4-2-3-1':['Goalkeeper','Left Back','Centre Back','Centre Back','Right Back','Defensive Midfielder','Defensive Midfielder','Left Winger','Attacking Midfielder','Right Winger','Striker'],
+ '3-5-2':['Goalkeeper','Centre Back','Centre Back','Centre Back','Left Wing Back','Central Midfielder','Central Midfielder','Central Midfielder','Right Wing Back','Striker','Striker'],
+ '3-4-3':['Goalkeeper','Centre Back','Centre Back','Centre Back','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Left Winger','Striker','Right Winger'],
+ '5-3-2':['Goalkeeper','Left Back','Centre Back','Centre Back','Centre Back','Right Back','Central Midfielder','Central Midfielder','Central Midfielder','Striker','Striker'],
+ '4-1-4-1':['Goalkeeper','Left Back','Centre Back','Centre Back','Right Back','Defensive Midfielder','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Striker']
+};
+
+function normalizeLineup(data,formation){
+ const defaults=formations[formation]||formations['4-3-3'];
+ const positions=labels[formation]||labels['4-3-3'];
+ return Array.from({length:11},(_,i)=>{
+  const old=data[i]||{};
+  return {
+   player_id:old.player_id||'',
+   position:positions[i],
+   x:Number.isFinite(Number(old.x))&&old.x!==null?Number(old.x):defaults[i][0],
+   y:Number.isFinite(Number(old.y))&&old.y!==null?Number(old.y):defaults[i][1]
+  };
+ });
+}
 
 function renderLineupSlots(){
  const formation=$('formation').value;
- const parts=formation.split('-').map(Number);
- let formationPositions=['Goalkeeper'];
- const labels={
-  '4-3-3':['Left Back','Centre Back','Centre Back','Right Back','Central Midfielder','Central Midfielder','Central Midfielder','Left Winger','Striker','Right Winger'],
-  '4-4-2':['Left Back','Centre Back','Centre Back','Right Back','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Striker','Striker'],
-  '4-2-3-1':['Left Back','Centre Back','Centre Back','Right Back','Defensive Midfielder','Defensive Midfielder','Left Winger','Attacking Midfielder','Right Winger','Striker'],
-  '3-5-2':['Centre Back','Centre Back','Centre Back','Left Wing Back','Central Midfielder','Central Midfielder','Central Midfielder','Right Wing Back','Striker','Striker'],
-  '3-4-3':['Centre Back','Centre Back','Centre Back','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Left Winger','Striker','Right Winger'],
-  '5-3-2':['Left Back','Centre Back','Centre Back','Centre Back','Right Back','Central Midfielder','Central Midfielder','Central Midfielder','Striker','Striker'],
-  '4-1-4-1':['Left Back','Centre Back','Centre Back','Right Back','Defensive Midfielder','Left Midfielder','Central Midfielder','Central Midfielder','Right Midfielder','Striker']
- };
- formationPositions=formationPositions.concat(labels[formation]||labels['4-3-3']);
- $('lineupSlots').innerHTML=formationPositions.map((pos,i)=>{
-  const selected=lineupData[i]?.player_id||'';
-  const options=players.map(p=>`<option value="${esc(p.id)}" ${selected===p.id?'selected':''}>${esc(p.name)} ${p.number?'#'+esc(p.number):''}</option>`).join('');
+ lineupData=normalizeLineup(lineupData,formation);
+ $('lineupSlots').innerHTML=labels[formation].map((pos,i)=>{
+  const selected=lineupData[i].player_id;
+  const options=players.map(p=>`
+   <option value="${esc(p.id)}" ${selected===p.id?'selected':''}>
+    ${esc(p.name)} ${p.number?'#'+esc(p.number):''}
+   </option>`).join('');
   return `<div class="slot">
    <label>${i+1}. ${pos}</label>
-   <small>${pos}</small>
    <select class="lineup-player" data-index="${i}">
     <option value="">Choose player</option>${options}
    </select>
   </div>`;
  }).join('');
+
+ document.querySelectorAll('.lineup-player').forEach(el=>{
+  el.addEventListener('change',()=>{
+   const i=Number(el.dataset.index);
+   lineupData[i].player_id=el.value;
+   renderPitch();
+  });
+ });
+ renderPitch();
+}
+
+function renderPitch(){
+ const container=$('pitchPlayers');
+ container.innerHTML=lineupData.map((entry,i)=>{
+  const player=players.find(p=>p.id===entry.player_id);
+  if(!player)return '';
+  return `<div class="pitch-player" data-index="${i}" style="left:${entry.x}%;top:${entry.y}%">
+   <div class="pitch-shirt">${esc(player.number||i+1)}</div>
+   <div class="pitch-name">${esc(player.name)}</div>
+  </div>`;
+ }).join('');
+
+ container.querySelectorAll('.pitch-player').forEach(marker=>{
+  marker.addEventListener('pointerdown',startDrag);
+ });
+}
+
+let draggingPlayer=null;
+
+function startDrag(e){
+ e.preventDefault();
+ draggingPlayer=e.currentTarget;
+ draggingPlayer.setPointerCapture(e.pointerId);
+ draggingPlayer.addEventListener('pointermove',movePlayer);
+ draggingPlayer.addEventListener('pointerup',stopDrag);
+ draggingPlayer.addEventListener('pointercancel',stopDrag);
+}
+
+function movePlayer(e){
+ if(!draggingPlayer)return;
+ const rect=$('lineupPitch').getBoundingClientRect();
+ let x=((e.clientX-rect.left)/rect.width)*100;
+ let y=((e.clientY-rect.top)/rect.height)*100;
+ x=Math.max(5,Math.min(95,x));
+ y=Math.max(4,Math.min(96,y));
+ const index=Number(draggingPlayer.dataset.index);
+ lineupData[index].x=Math.round(x*10)/10;
+ lineupData[index].y=Math.round(y*10)/10;
+ draggingPlayer.style.left=x+'%';
+ draggingPlayer.style.top=y+'%';
+}
+
+function stopDrag(){
+ if(!draggingPlayer)return;
+ draggingPlayer.removeEventListener('pointermove',movePlayer);
+ draggingPlayer.removeEventListener('pointerup',stopDrag);
+ draggingPlayer.removeEventListener('pointercancel',stopDrag);
+ draggingPlayer=null;
 }
 
 $('formation').onchange=()=>{
- lineupData=[];
+ lineupData=normalizeLineup(lineupData,$('formation').value);
  renderLineupSlots();
 };
 
 async function loadLineup(){
  const {data,error}=await db.from('lineups').select('*').eq('id','current').maybeSingle();
- if(error){$('lineupHint').textContent='Could not load lineup: '+error.message;return;}
+ if(error){
+  $('lineupHint').textContent='Could not load lineup: '+error.message;
+  return;
+ }
  if(data){
   $('lineupTitle').value=data.title||'Starting XI';
   $('formation').value=data.formation||'4-3-3';
   lineupData=Array.isArray(data.players)?data.players:[];
  }
+ lineupData=normalizeLineup(lineupData,$('formation').value);
  renderLineupSlots();
 }
 
 $('saveLineup').onclick=async()=>{
  try{
-  const selected=[...document.querySelectorAll('.lineup-player')].map((el,i)=>({
-   player_id:el.value,
-   position:positions[i]||el.closest('.slot').querySelector('label').textContent.replace(/^\d+\.\s*/,'')
-  }));
+  const selected=lineupData;
   if(selected.some(p=>!p.player_id))throw new Error('Choose all 11 players first');
   const ids=selected.map(p=>p.player_id);
   if(new Set(ids).size!==11)throw new Error('Each player can only be selected once');
+
+  $('lineupHint').textContent='Saving lineup...';
   const row={
    id:'current',
    title:$('lineupTitle').value.trim()||'Starting XI',
@@ -456,10 +533,8 @@ $('saveLineup').onclick=async()=>{
    players:selected,
    updated_at:new Date().toISOString()
   };
-  $('lineupHint').textContent='Saving lineup...';
   const {error}=await db.from('lineups').upsert(row,{onConflict:'id'});
   if(error)throw error;
-  lineupData=selected;
   $('lineupHint').textContent='Starting XI saved successfully';
   say('Starting XI saved');
  }catch(err){
@@ -470,9 +545,15 @@ $('saveLineup').onclick=async()=>{
 
 $('clearLineup').onclick=()=>{
  if(!confirm('Clear all 11 player selections?'))return;
- lineupData=[];
+ lineupData=normalizeLineup([],$('formation').value);
  renderLineupSlots();
  $('lineupHint').textContent='Selections cleared. Save to update the website';
+};
+
+$('resetPositions').onclick=()=>{
+ lineupData=normalizeLineup(lineupData,$('formation').value);
+ renderPitch();
+ $('lineupHint').textContent='Positions reset. Save to update the website';
 };
 
 /* INITIAL LOAD */
@@ -480,6 +561,5 @@ $('clearLineup').onclick=()=>{
 (async()=>{
  if(await requireAdmin())await showDashboard();
 })();
-</script>
-</body>
+</script></body>
 </html>
