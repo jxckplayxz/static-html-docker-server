@@ -101,6 +101,7 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .highlights-feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
 .highlight-slide{position:relative;background:#111;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:340px;aspect-ratio:9/14}
 .highlight-slide img,.highlight-slide video{width:100%;height:100%;min-height:340px;object-fit:cover;display:block;background:#080808}
+.highlight-slide img{cursor:zoom-in}
 .highlight-slide video{position:absolute;inset:0}
 .highlight-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85) 100%);pointer-events:none}
 .highlight-caption{position:absolute;bottom:0;left:0;right:0;padding:24px 18px 18px;z-index:2}
@@ -109,6 +110,45 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .highlight-empty{grid-column:1/-1;text-align:center;padding:55px 20px;background:var(--card);border:1px dashed var(--border);border-radius:10px;color:var(--muted)}
 .highlight-type{position:absolute;top:12px;left:12px;z-index:3;background:rgba(0,0,0,.65);padding:6px 9px;border-radius:5px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 .highlight-slide video::-webkit-media-controls{z-index:5}
+
+/* FULL SIZE PHOTO VIEWER */
+.image-viewer{
+display:none;
+position:fixed;
+inset:0;
+z-index:9999;
+background:rgba(0,0,0,.97);
+padding:60px 12px 20px;
+overflow:auto;
+align-items:flex-start;
+justify-content:center;
+overscroll-behavior:contain;
+}
+.image-viewer.active{display:flex}
+.image-viewer img{
+width:auto;
+height:auto;
+max-width:none;
+max-height:none;
+display:block;
+margin:auto;
+object-fit:contain;
+}
+.image-viewer-close{
+position:fixed;
+top:12px;
+right:16px;
+z-index:10000;
+width:44px;
+height:44px;
+border:1px solid #555;
+border-radius:50%;
+background:#222;
+color:#fff;
+font-size:28px;
+line-height:1;
+cursor:pointer;
+}
 
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .contact-photo{padding:0 20px 96px}
@@ -238,20 +278,28 @@ footer{padding:40px 20px 24px}
 <div class="photo-frame"><img id="contactPhoto" alt="Rock Island FC"></div>
 </div>
 
+<div class="image-viewer" id="imageViewer" aria-hidden="true">
+<button class="image-viewer-close" id="closeImageViewer" aria-label="Close image">&times;</button>
+<img id="fullSizeImage" alt="Full size Rock Island FC highlight">
+</div>
+
 <script>
 (() => {
 const wrap=document.getElementById('contact');
 const img=document.getElementById('contactPhoto');
 const files=['photo.png','photo.jpg','photo.jpeg'];
 let i=0;
+
 img.onload=()=>{
 wrap.querySelector('.photo-frame').style.setProperty('--r',img.naturalWidth/(img.naturalHeight||1));
 wrap.classList.add('loaded');
 };
+
 img.onerror=()=>{
 if(++i<files.length)img.src=files[i];
 else wrap.style.display='none';
 };
+
 img.src=files[0];
 })();
 </script>
@@ -281,6 +329,40 @@ const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON
 
 function initIcons(){if(window.lucide)lucide.createIcons()}
 initIcons();
+
+/* FULL SIZE HIGHLIGHT PHOTO VIEWER */
+const imageViewer=document.getElementById('imageViewer');
+const fullSizeImage=document.getElementById('fullSizeImage');
+const closeImageButton=document.getElementById('closeImageViewer');
+
+document.getElementById('highlightsContainer').addEventListener('click',event=>{
+const photo=event.target.closest('.highlight-slide img');
+if(!photo)return;
+
+fullSizeImage.src=photo.currentSrc||photo.src;
+imageViewer.classList.add('active');
+imageViewer.setAttribute('aria-hidden','false');
+document.body.style.overflow='hidden';
+});
+
+function closeImageViewer(){
+imageViewer.classList.remove('active');
+imageViewer.setAttribute('aria-hidden','true');
+fullSizeImage.removeAttribute('src');
+document.body.style.overflow='';
+}
+
+closeImageButton.addEventListener('click',closeImageViewer);
+
+imageViewer.addEventListener('click',event=>{
+if(event.target===imageViewer)closeImageViewer();
+});
+
+document.addEventListener('keydown',event=>{
+if(event.key==='Escape'&&imageViewer.classList.contains('active')){
+closeImageViewer();
+}
+});
 
 window.addEventListener('scroll',()=>{
 document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
@@ -507,6 +589,7 @@ ${media}
 }).join('');
 
 const videos=container.querySelectorAll('video');
+
 const videoObserver=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
 const video=entry.target;
