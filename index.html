@@ -12,12 +12,11 @@
 :root{--red:#E31C23;--red-dark:#A81419;--red-deep:#7A0F13;--black:#0A0A0A;--card:#121212;--elevated:#1A1A1A;--text:#fff;--muted:#999;--border:rgba(255,255,255,.08);--font:'Outfit',sans-serif;--body:'Inter',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:60px}
-body{font-family:var(--body);background:var(--black);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+body{font-family:var(--body);background:var(--black);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000}
-.nav-top{background:var(--red);padding:8px 0;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-align:center;color:#fff}
-.nav-main{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:transparent;transition:all .3s}
-.nav.scrolled .nav-main{background:rgba(10,10,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 48px}
+.nav-main{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(10,10,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav.scrolled .nav-main{padding:12px 48px}
 .nav-logo,.footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
 .nav-logo img{height:48px;width:auto;object-fit:contain}
 .nav-logo span,.footer-logo span{font-family:var(--font);font-weight:800;font-size:1.15rem;text-transform:uppercase}
@@ -25,7 +24,7 @@ body{font-family:var(--body);background:var(--black);color:var(--text);line-heig
 .nav-links a,.footer-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;font-weight:600;text-transform:uppercase;transition:color .2s}
 .nav-links a:hover,.footer-links a:hover{color:var(--red)}
 
-.hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:0 48px 80px;overflow:hidden;max-width:none;margin:0}
+.hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;padding:110px 48px 80px;overflow:hidden;max-width:none;margin:0}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(10,10,10,.5) 50%,rgba(10,10,10,.98) 100%),linear-gradient(90deg,rgba(227,28,35,.4) 0%,transparent 55%),radial-gradient(ellipse at 70% 30%,rgba(227,28,35,.12) 0%,transparent 50%);z-index:1}
 .hero-bg:before{content:'';position:absolute;inset:0;background:url('/logo.png') center 40%/42% no-repeat;opacity:.07;filter:grayscale(1)}
 .hero-content{position:relative;z-index:2;max-width:700px}
@@ -40,20 +39,12 @@ body{font-family:var(--body);background:var(--black);color:var(--text);line-heig
 .btn-red{background:var(--red);color:#fff}
 .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
 
-.next-match-bar{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:3px solid #fff}
-.next-match-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8)}
-.next-match-teams{display:flex;align-items:center;gap:16px;font-family:var(--font);font-weight:800;font-size:1.1rem;text-transform:uppercase}
-.next-match-teams img{width:36px;height:36px;object-fit:contain}
-.next-match-vs{color:rgba(255,255,255,.6);font-size:.85rem}
-.next-match-meta{font-size:.85rem;color:rgba(255,255,255,.85);text-align:right}
-.next-match-meta strong{display:block;color:#fff;font-size:.95rem}
-
 section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .section-header{margin-bottom:40px}
 .section-header h2{font-family:var(--font);font-size:2.2rem;font-weight:800;text-transform:uppercase;letter-spacing:-.02em}
 .section-tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
 
-.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px}
 .match-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .3s}
 .match-card:hover{border-color:rgba(227,28,35,.5);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
 .match-card-top{background:linear-gradient(90deg,var(--red-deep),var(--red));padding:10px 18px;display:flex;justify-content:space-between;align-items:center}
@@ -63,7 +54,7 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .match-date-sm{font-size:.75rem;color:rgba(255,255,255,.7)}
 .match-body{padding:28px 20px}
 .match-teams-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
-.team-block{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.team-block{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .team-block img{width:56px;height:56px;object-fit:contain}
 .team-block h3{font-family:var(--font);font-size:.9rem;font-weight:700;line-height:1.25;max-width:120px}
 .team-block .role{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
@@ -87,7 +78,6 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .player-name{font-family:var(--font);font-size:1rem;font-weight:700;margin-bottom:4px}
 .player-pos{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
 
-/* STARTING XI */
 .lineup-section{padding-top:30px}
 .lineup-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
 .lineup-formation{background:rgba(227,28,35,.15);border:1px solid rgba(227,28,35,.35);color:#ff7777;padding:8px 16px;border-radius:5px;font-family:var(--font);font-weight:800;font-size:.9rem}
@@ -107,7 +97,6 @@ section{padding:80px 48px;max-width:1280px;margin:0 auto}
 .lineup-status{margin-top:16px;text-align:center;color:var(--muted);font-size:.8rem}
 .lineup-section .empty-state{margin-top:20px}
 
-/* HIGHLIGHTS */
 .highlights-section{max-width:1280px}
 .highlights-feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
 .highlight-slide{position:relative;background:#111;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:340px;aspect-ratio:9/14}
@@ -148,17 +137,15 @@ footer{background:#050505;border-top:1px solid var(--border);padding:48px 48px 3
 .nav-main{padding:14px 20px}
 .nav.scrolled .nav-main{padding:12px 20px}
 .nav-links{display:none}
-.hero{padding:0 20px 60px;align-items:center}
+.hero{padding:110px 20px 60px;align-items:center}
 .hero-content{text-align:center}
 .hero p{margin-inline:auto}
 .hero-actions{justify-content:center}
-.next-match-bar{padding:16px 20px;flex-direction:column;text-align:center}
-.next-match-meta{text-align:center}
 section{padding:60px 20px}
 .contact-photo{padding:0 20px 72px}
 footer{padding:40px 20px 24px}
 .footer-inner{flex-direction:column;text-align:center}
-.footer-links{justify-content:center}
+.footer-links{justify-content:center;flex-wrap:wrap}
 .lineup-section{padding-top:30px}
 }
 @media(max-width:480px){
@@ -170,13 +157,13 @@ footer{padding:40px 20px 24px}
 .lineup-player-name{font-size:.59rem;max-width:68px}
 .highlights-feed{grid-template-columns:1fr}
 .highlight-slide{max-width:420px;width:100%;margin:0 auto}
+.matches-grid{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 </head>
 
 <body>
 <header class="nav" id="nav">
-<div class="nav-top">Rock Island FC · Red &amp; Black</div>
 <div class="nav-main">
 <a href="/" class="nav-logo"><img src="/logo.png" alt="Rock Island FC"><span>Rock Island FC</span></a>
 <ul class="nav-links">
@@ -201,12 +188,6 @@ footer{padding:40px 20px 24px}
 </div>
 </div>
 </section>
-
-<div class="next-match-bar" id="nextMatchBar" style="display:none">
-<div><div class="next-match-label">Next Match</div></div>
-<div class="next-match-teams" id="nextMatchTeams"></div>
-<div class="next-match-meta" id="nextMatchMeta"></div>
-</div>
 
 <section id="matches">
 <div class="section-header fade-up">
@@ -386,19 +367,6 @@ const past=matches.filter(match=>match.status==='past').sort((a,b)=>String(b.dat
 
 document.getElementById('upcomingContainer').innerHTML=upcoming.length?upcoming.map(match=>buildCard(match,false)).join(''):'<div class="empty-state">No upcoming fixtures scheduled</div>';
 document.getElementById('pastContainer').innerHTML=past.length?past.map(match=>buildCard(match,true)).join(''):'<div class="empty-state">No recent results yet</div>';
-
-const bar=document.getElementById('nextMatchBar');
-if(!upcoming.length){bar.style.display='none';return}
-
-const next=upcoming[0];
-const isHome=next.side==='home';
-bar.style.display='flex';
-
-document.getElementById('nextMatchTeams').innerHTML=isHome
-?`<img src="/logo.png" alt="RIFC"><span>RIFC</span><span class="next-match-vs">vs</span><span>${esc(next.opponent||'Opponent')}</span>`
-:`<span>${esc(next.opponent||'Opponent')}</span><span class="next-match-vs">vs</span><img src="/logo.png" alt="RIFC"><span>RIFC</span>`;
-
-document.getElementById('nextMatchMeta').innerHTML=`<strong>${formatDate(next.date)} · ${formatTime(next.time)}</strong>${esc(next.location||'Location TBA')}`;
 }
 
 function renderPlayers(players){
@@ -413,8 +381,6 @@ ${player.photo?`<img class="player-photo" src="${esc(player.photo)}" alt="${esc(
 </div>`).join('')
 :'<div class="empty-state">Squad coming soon</div>';
 }
-
-/* STARTING XI */
 
 function getPlayerId(entry){
 if(typeof entry==='string')return entry;
@@ -497,8 +463,6 @@ container.innerHTML=`
 <div class="lineup-status">${selected.length} of 11 players shown</div>`;
 }
 
-/* HIGHLIGHTS */
-
 function formatHighlightDate(value){
 if(!value)return '';
 const date=new Date(value);
@@ -543,15 +507,11 @@ ${media}
 }).join('');
 
 const videos=container.querySelectorAll('video');
-
 const videoObserver=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
 const video=entry.target;
-if(entry.isIntersecting){
-video.play().catch(()=>{});
-}else{
-video.pause();
-}
+if(entry.isIntersecting)video.play().catch(()=>{});
+else video.pause();
 });
 },{threshold:.5});
 
